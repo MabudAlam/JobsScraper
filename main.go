@@ -103,6 +103,7 @@ func main() {
 	r.GET("/sync", handlers.SyncAll)
 
 	r.GET("/getallJobs", handlers.GetJobsFromDB)
+	r.GET("/getallJobsFromSQL", handlers.GetAllJobsFromSqlite)
 
 	opt := option.WithCredentialsFile(filePath)
 	firestoreClient, err := firestore.NewClient(context.Background(), projectID, opt)
