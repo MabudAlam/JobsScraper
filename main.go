@@ -99,7 +99,7 @@ func main() {
 	r.GET("/gojek", handlers.Gojekhandler)
 	r.GET("/mpl", handlers.MplHandler)
 
-	r.GET("/all", handlers.AllScrapersHandler)
+	r.GET("/syncwithSql", handlers.AllScrapersHandler)
 	r.GET("/sync", handlers.SyncAll)
 
 	r.GET("/getallJobs", handlers.GetJobsFromDB)
@@ -120,7 +120,7 @@ func main() {
 	})
 
 	r.GET("/", func(c *gin.Context) {
-		c.File("index.html")
+		c.File("static/base.html")
 	})
 	r.Use(CORSMiddleware())
 
