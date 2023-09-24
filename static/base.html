@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Postings</title>
+    <style>
+        .career-card {
+            width: 30rem;
+            margin: 10px;
+            padding: 10px;
+            border: 2px solid #73AD21;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            text-align: left;
+            display: inline-block;
+            vertical-align: top;
+            border-radius: 5px;
+            background-color: #fff;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        @media screen and (max-width: 1200px) {
+            .career-card {
+                width: 90%;
+            }
+        }
+
+        /* Hover effect */
+        .career-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        @media screen and (max-width: 1200px) {
+            .career-card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <div id="jobCards"></div>
+
+    </center>
+
+    <script>
+        // Function to fetch job data from the API and generate cards
+        async function fetchAndDisplayJobs() {
+            try {
+                const response = await fetch('http://localhost:8080/getallJobsFromSQL');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+
+                const jobCardsContainer = document.getElementById('jobCards');
+
+                // Loop through the job data and create a card for each job
+                data.forEach(job => {
+                    const card = document.createElement('div');
+                    card.className = 'career-card'; // Update the class name
+                    card.innerHTML = `
+                    <div class="d-flex justify-content-around flex-wrap mb-10">
+                            <div class="row g-0">
+                                <div class="col-md-3 d-flex align-items-center p-2">
+                                    <img src="${job.ImageUrl}" alt="${job.title}" class="card-img-top" width="24" height="24">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${job.title}</h5>
+                                        <p class="card-text"><strong>Location:</strong> ${job.location}</p>
+                                        <a href="${job.applyUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Apply</a>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                `;
+
+                    jobCardsContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error fetching or displaying job data:', error);
+            }
+        }
+
+        // Call the function to fetch and display jobs when the page loads
+        window.onload = fetchAndDisplayJobs();
+    </script>
+</body>
+
+</html>
