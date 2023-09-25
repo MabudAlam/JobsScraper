@@ -38,7 +38,7 @@ func FreshWorksScraper() ([]models.Job, error) {
 			ID:        utility.GenerateRandomID(),
 			Company:   "Freshworks",
 			CreatedAt: currentTime.Unix(),
-			ImageUrl:  "https://w7.pngwing.com/pngs/898/376/png-transparent-united-states-coursera-massive-open-online-course-education-united-states-blue-text-trademark.png",
+			ImageUrl:  "https://c.smartrecruiters.com/sr-careersite-image-prod-aws-dc5/6192298b15620618dbc926de/1f3e7b18-283d-4204-bc54-638c69b3de7f?r=s3-eu-central-1.png",
 		}
 		fmt.Print(posting)
 		postings = append(postings, posting)
