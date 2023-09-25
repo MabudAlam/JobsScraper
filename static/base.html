@@ -5,7 +5,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Postings</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".fa-search").click(function () {
+                $(".icon").toggleClass("active");
+                $("input[type='text']").toggleClass("active");
+            });
+        });
+    </script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
     <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .navbar {
+            background-color: #037729;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            padding: 0 100px;
+        }
+
+        .navbar .logo {
+            color: #fff;
+            font-size: 30px;
+            font-weight: 600;
+            letter-spacing: -1px;
+        }
+
+        .navbar .nav-items {
+            display: flex;
+            flex: 1;
+            padding: 0 0 0 200px;
+        }
+
+        .navbar .nav-items li {
+            list-style: none;
+            padding: 0 10px;
+        }
+
+        .navbar .nav-items li a {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .navbar .nav-items li a:hover {
+            color: #19191b;
+        }
+
+        .navbar .searchbar {
+            position: relative;
+        }
+
+        .navbar .searchbar input[type="text"] {
+            border: 0;
+            padding: 0;
+            width: 0px;
+            height: 35px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .search-button {
+            background-color: #007BFF;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            margin-left: 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .navbar .searchbar .icon {
+            display: flex;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 35px;
+            height: 100%;
+            background: none;
+            border-radius: 3px;
+            color: #fff;
+            transition: all 0.5s 0.3s ease;
+        }
+
+        .navbar .searchbar .icon i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+
+        .navbar .searchbar .icon.active {
+            background: #062333;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .searchbar input[type="text"].active {
+            width: 250px;
+            padding: 0 10px;
+            transition: all 0.5s 0.2s ease;
+        }
+
+        .navbar .licon li {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar .licon li a {
+            padding: 0 20px;
+        }
+
+        .navbar .fa-user-circle:hover {
+            color: #0e0d0d !important;
+        }
+
         .career-card {
             width: 30rem;
             margin: 10px;
@@ -26,68 +164,116 @@
             }
         }
 
-        /* Hover effect */
         .career-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
         }
 
-        @media screen and (max-width: 1200px) {
-            .career-card {
-                width: 90%;
-            }
+        .apply-button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 16px;
+            margin-top: 100px;
+            margin-bottom: 100px;
+            margin-right: 150px;
+            margin-left: 80px;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .apply-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 
 <body>
+    <nav class="navbar">
+        <div class="logo">
+            Jobs Scraper
+        </div>
+
+        <div class="nav-items">
+            <li><a href="https://github.com/Pavel401/Jobs-Scraper">Github</a></li>
+
+        </div>
+
+        <div class="searchbar">
+            <input type="text" placeholder="Search">
+            <div class="icon">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+
+        <button id="searchButton" class="search-button">Search</button>
+    </nav>
     <center>
         <div id="jobCards"></div>
-
     </center>
 
     <script>
-        // Function to fetch job data from the API and generate cards
+        let allJobsData = [];
+
         async function fetchAndDisplayJobs() {
             try {
                 const response = await fetch('http://localhost:8080/getallJobsFromSQL');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const data = await response.json();
-
-                const jobCardsContainer = document.getElementById('jobCards');
-
-                // Loop through the job data and create a card for each job
-                data.forEach(job => {
-                    const card = document.createElement('div');
-                    card.className = 'career-card'; // Update the class name
-                    card.innerHTML = `
-                    <div class="d-flex justify-content-around flex-wrap mb-10">
-                            <div class="row g-0">
-                                <div class="col-md-3 d-flex align-items-center p-2">
-                                    <img src="${job.ImageUrl}" alt="${job.title}" class="card-img-top" width="24" height="24">
-                                </div>
-                                <div class="col-md-9">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${job.title}</h5>
-                                        <p class="card-text"><strong>Location:</strong> ${job.location}</p>
-                                        <a href="${job.applyUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Apply</a>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                `;
-
-                    jobCardsContainer.appendChild(card);
-                });
+                allJobsData = await response.json();
+                displayJobs(allJobsData);
             } catch (error) {
                 console.error('Error fetching or displaying job data:', error);
             }
         }
 
-        // Call the function to fetch and display jobs when the page loads
+        function displayJobs(data) {
+            const jobCardsContainer = document.getElementById('jobCards');
+            jobCardsContainer.innerHTML = '';
+
+            data.forEach(job => {
+                const card = document.createElement('div');
+                card.className = 'career-card';
+                card.innerHTML = `
+        <div class="d-flex justify-content-around flex-wrap mb-10">
+            <div class="row g-0">
+                <div class="col-md-3 d-flex align-items-center p-2">
+                    <img src="${job.ImageUrl}" alt="${job.title}" class="card-img-top" width="24" height="24">
+                </div>
+                <div class="col-md-9">
+                        <h5 class="card-title">${job.title}</h5>
+                        <p class="card-text"><strong>Location:</strong> <span class="location-text">${job.location}</span></p>
+                        <p class="card-text"><strong>Company:</strong> <span class="company-text">${job.company}</span></p>
+                        <a href="${job.applyUrl}" target="_blank" rel="noopener noreferrer" class="apply-button">Apply Now</a>
+                </div>
+            </div>
+        </div>
+    `;
+
+                jobCardsContainer.appendChild(card);
+            });
+        }
+
         window.onload = fetchAndDisplayJobs();
+
+        document.getElementById('searchButton').addEventListener('click', function () {
+            const searchQuery = document.querySelector('.searchbar input[type="text"]').value.toLowerCase();
+            const filteredJobs = allJobsData.filter(job =>
+                job.title.toLowerCase().includes(searchQuery) ||
+                job.location.toLowerCase().includes(searchQuery) ||
+                job.company.toLowerCase().includes(searchQuery)
+            );
+
+            displayJobs(filteredJobs);
+        });
+
+        document.querySelector('.searchbar input[type="text"]').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('searchButton').click();
+            }
+        });
     </script>
 </body>
 
