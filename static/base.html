@@ -60,6 +60,7 @@
             padding: 0 10px;
         }
 
+        /* Styling each list items */
         .navbar .nav-items li a {
             color: #fff;
             font-size: 15px;
@@ -146,6 +147,8 @@
 
         .career-card {
             width: 30rem;
+            margin-bottom: 20px;
+
             margin: 10px;
             padding: 10px;
             border: 2px solid #73AD21;
@@ -170,20 +173,32 @@
         }
 
         .apply-button {
+            margin-top: 10px;
+        }
+
+        .apply-button a {
             background-color: #007BFF;
+            border: none;
             color: #fff;
-            padding: 10px 16px;
-            margin-top: 100px;
-            margin-bottom: 100px;
-            margin-right: 150px;
-            margin-left: 80px;
-            text-decoration: none;
+            padding: 10px 20px;
             border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
             transition: background-color 0.3s;
         }
 
-        .apply-button:hover {
+        .apply-button a:hover {
             background-color: #0056b3;
+        }
+
+        .location-text {
+            margin-right: 10px;
+        }
+
+        .box1 img {
+            object-fit: contain;
+            width: 100%;
         }
     </style>
 </head>
@@ -198,7 +213,6 @@
             <li><a href="https://github.com/Pavel401/Jobs-Scraper">Github</a></li>
 
         </div>
-
         <div class="searchbar">
             <input type="text" placeholder="Search">
             <div class="icon">
@@ -207,6 +221,7 @@
         </div>
 
         <button id="searchButton" class="search-button">Search</button>
+
     </nav>
     <center>
         <div id="jobCards"></div>
@@ -222,6 +237,7 @@
                     throw new Error('Network response was not ok');
                 }
                 allJobsData = await response.json();
+
                 displayJobs(allJobsData);
             } catch (error) {
                 console.error('Error fetching or displaying job data:', error);
@@ -236,23 +252,36 @@
                 const card = document.createElement('div');
                 card.className = 'career-card';
                 card.innerHTML = `
-        <div class="d-flex justify-content-around flex-wrap mb-10">
-            <div class="row g-0">
-                <div class="col-md-3 d-flex align-items-center p-2">
-                    <img src="${job.ImageUrl}" alt="${job.title}" class="card-img-top" width="24" height="24">
+<div class="d-flex justify-content-around flex-wrap mb-10">
+    <div class="row g-0">
+        <div class="col-md-3 d-flex align-items-center p-2">
+            <div class="box box1">   <img src="${job.ImageUrl}" alt="${job.title}" class="card-img-top" width="40" height="40" ></div>
+         
+        </div>
+        <div class="col-md-9">
+            <div class="card-body">
+                <h5 class="card-title">${job.title}</h5>
+                <div class="apply-button">
+                <p class="card-text"><strong>Location:</strong> <span class="location-text">${job.location}</span></p>
                 </div>
-                <div class="col-md-9">
-                        <h5 class="card-title">${job.title}</h5>
-                        <p class="card-text"><strong>Location:</strong> <span class="location-text">${job.location}</span></p>
-                        <p class="card-text"><strong>Company:</strong> <span class="company-text">${job.company}</span></p>
-                        <a href="${job.applyUrl}" target="_blank" rel="noopener noreferrer" class="apply-button">Apply Now</a>
+                <div class="apply-button">
+                <p class="card-text"><strong>Company:</strong> <span class="location-text">${job.company}</span></p>
+            </div>
+
+                <div class="apply-button">
+                    <a href="${job.applyUrl}" target="_blank" rel="noopener noreferrer" >Apply Now</a>
                 </div>
             </div>
         </div>
-    `;
+    </div>
+</div>
+`;
+
 
                 jobCardsContainer.appendChild(card);
             });
+
+
         }
 
         window.onload = fetchAndDisplayJobs();
