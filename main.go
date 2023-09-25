@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"scrapper/handlers"
 	"strings"
 
 	"github.com/goccy/go-json"
