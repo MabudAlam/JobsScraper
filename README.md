@@ -1,4 +1,4 @@
-<img width="1710" alt="Screenshot 2023-09-19 at 3 05 53 PM" src="https://github.com/Pavel401/Jobs-Scraper/assets/47685150/72843e24-8c5c-4faa-bba1-d94e024f53c6">
+<img width="1470" alt="Screenshot 2023-09-28 at 2 58 49 AM" src="https://github.com/Pavel401/Jobs-Scraper/assets/47685150/e47e5503-f824-47a2-ad63-ed66c298f350">
 
 
 # Jobs Scraper 
@@ -40,33 +40,6 @@ cd <repository-directory>
 go build
 ```
 
-## Configuration
-
-This package relies on a configuration file (`.env`) and a Firebase service account JSON key file (`firebase-config.json`). You should set up these files before running the application.
-
-### `.env` Configuration
-
-Create a `.env` file in the root directory of your project with the following environment variables:
-
-```env
-FIREBASE_PROJECT_ID=<your-firebase-project-id>
-PORT=<desired-port-number>
-UNIVERSAL_DOMAIN=<universal-domain-url>
-
-PRIVATE_KEY_ID=<private-key-id>
-PRIVATE_KEY=<private-key>
-TYPE=<service-account-type>
-CLIENT_EMAIL=<client-email>
-CLIENT_ID=<client-id>
-AUTH_URI=<auth-uri>
-TOKEN_URI=<token-uri>
-AUTH_PROVIDER_X509_CERT_URL=<auth-provider-x509-cert-url>
-CLIENT_X509_CERT_URL=<client-x509-cert-url>
-```
-
-Replace the placeholders with your actual Firebase project details and service account credentials.
-
-
 ## Usage
 
 To run the Jobs Scraper application, simply execute the compiled binary:
@@ -80,13 +53,21 @@ The application will start, and you can access the available endpoints in your w
 ## Endpoints
 
 The Jobs Scraper package provides the following endpoints:
+Certainly! Here's the updated README for your Jobs Scraper package with the provided code changes:
+
+---
+
+# Jobs Scraper Package
+
+The Jobs Scraper package allows you to scrape job postings from various websites and manage the data in Firebase Firestore. This package provides the following endpoints:
 
 - `/cred`: Retrieves the Firebase service account credentials.
 - `/atlassian`, `/amazon`, `/coursera`, `/freshworks`, `/gojek`, `/mpl`: Scrapes job postings from specific websites.
-- `/all`: Scrapes job postings from all supported websites.
-- `/syncFirestore`: Synchronizes job postings with Firebase Firestore.
-- `/getJobsFromFirestore`: Retrieves job postings from Firebase Firestore.
+- `/syncwithSql`: Synchronizes job postings with a SQL database.
+- `/getallJobsFromSQL`: Retrieves job postings from a SQL database.
 - `/`: Serves an HTML file (index.html).
+
+
 
 ## Contributing
 
