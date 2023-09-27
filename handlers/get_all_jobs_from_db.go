@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"goscraper/config"
+	"goscraper/models"
 	"net/http"
-	"scrapper/config"
-	"scrapper/models"
 
 	"github.com/gin-gonic/gin"
 )

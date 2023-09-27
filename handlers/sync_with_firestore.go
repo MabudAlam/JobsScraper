@@ -3,9 +3,9 @@ package handlers
 import (
 	"context"
 	"fmt"
+	"goscraper/models"
+	"goscraper/services"
 	"net/http"
-	"scrapper/models"
-	"scrapper/services"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/api/iterator"

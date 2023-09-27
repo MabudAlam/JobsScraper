@@ -3,8 +3,8 @@ package services
 import (
 	"encoding/json"
 	"fmt"
+	"goscraper/models"
 	"net/http"
-	"scrapper/models"
 	"time"
 )
 

@@ -1,11 +1,12 @@
+
+
 package handlers
 
 import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"scrapper/models"
-)
+"goscraper/models")
 
 func GetAllJobsFromSqlite(c *gin.Context) {
 	db, err := sql.Open("sqlite3", "jobs.db")

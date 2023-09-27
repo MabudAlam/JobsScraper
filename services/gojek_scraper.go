@@ -2,9 +2,9 @@ package services
 
 import (
 	"fmt"
+	"goscraper/models"
 	"log"
-	"scrapper/models"
-	"scrapper/utility"
+	"goscraper/utility"
 	"strings"
 	"time"
 

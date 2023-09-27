@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"scrapper/models"
-)
+"goscraper/models")
 
 func AtlassianScrapper() ([]models.Job, error) {
 	// URL of the API to fetch data from.

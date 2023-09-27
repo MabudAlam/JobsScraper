@@ -1,10 +1,10 @@
 package handlers
 
 import (
+	"goscraper/config"
+	"goscraper/models"
+	"goscraper/services"
 	"net/http"
-	"scrapper/config"
-	"scrapper/models"
-	"scrapper/services"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"

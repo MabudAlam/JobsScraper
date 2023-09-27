@@ -1,9 +1,9 @@
 package config
 
 import (
+	"goscraper/models"
 	"log"
 	"os"
-	"scrapper/models"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"

@@ -1,10 +1,9 @@
 package handlers
 
 import (
-	"net/http"
-	"scrapper/services"
-
 	"github.com/gin-gonic/gin"
+	"goscraper/services"
+	"net/http"
 )
 
 // GetPostingsHandler handles the /get-postings route.

@@ -3,8 +3,7 @@ package services
 import (
 	"encoding/json"
 	"net/http"
-	"scrapper/models"
-)
+"goscraper/models")
 
 // Function to fetch postings from the API and convert them to Posting structs.
 func CredScraper() ([]models.Job, error) {

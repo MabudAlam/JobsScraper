@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"goscraper/services"
 	"net/http"
-	"scrapper/services"
 
 	"github.com/gin-gonic/gin"
 )

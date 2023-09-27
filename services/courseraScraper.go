@@ -1,9 +1,9 @@
 package services
 
 import (
+	"goscraper/models"
+	"goscraper/utility"
 	"log"
-	"scrapper/models"
-	"scrapper/utility"
 	"strings"
 	"time"
 

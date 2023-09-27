@@ -3,8 +3,8 @@ package config
 import (
 	"context"
 	"fmt"
-	"scrapper/models"
-	"scrapper/services"
+	"goscraper/models"
+	"goscraper/services"
 
 	firebase "firebase.google.com/go"
 	"google.golang.org/api/option"
