@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite" 
 )
 
 // Defined a list of scraper functions
@@ -43,10 +43,9 @@ var scrapers = []struct {
 		scraper: services.MplScrapper,
 	},
 }
-
 func AllScrapersHandler(c *gin.Context) {
 	// Open or create the SQLite database file.
-	db, err := sql.Open("sqlite3", "jobs.db")
+	db, err := sql.Open("sqlite", "jobs.db") // Use "sqlite" as the driver name
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
