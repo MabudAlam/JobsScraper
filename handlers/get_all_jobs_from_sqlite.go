@@ -6,10 +6,11 @@ import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	_"modernc.org/sqlite"
 "goscraper/models")
 
 func GetAllJobsFromSqlite(c *gin.Context) {
-	db, err := sql.Open("sqlite3", "jobs.db")
+	db, err := sql.Open("sqlite", "jobs.db")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
