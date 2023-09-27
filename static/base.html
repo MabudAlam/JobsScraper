@@ -236,6 +236,9 @@
 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
+                }else{
+                    console.log("ok");
+                    console.log(response);
                 }
                 allJobsData = await response.json();
 
