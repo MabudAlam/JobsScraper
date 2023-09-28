@@ -21,6 +21,8 @@ func main() {
 	r.GET("/gojek", handlers.Gojekhandler)
 	r.GET("/mpl", handlers.MplHandler)
 	r.GET("/google", handlers.GoogleHandler)
+	r.GET("/paypal", handlers.PayPalHandler)
+
 	r.GET("/zoho", handlers.ZohoHandler)
 
 	r.GET("/syncwithSql", handlers.AllScrapersHandler)
