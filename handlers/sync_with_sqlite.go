@@ -50,10 +50,10 @@ var scrapers = []struct {
 		name:    "Zoho",
 		scraper: services.ZohoScraper,
 	},
-	{
-		name:    "PayPal",
-		scraper: services.PayPalScraper,
-	},
+	// {
+	// 	name:    "PayPal",
+	// 	scraper: services.PayPalScraper,
+	// },
 }
 
 func AllScrapersHandler(c *gin.Context) {

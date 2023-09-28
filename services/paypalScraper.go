@@ -23,7 +23,7 @@ func PayPalScraper() ([]models.Job, error) {
 	// Create a slice to hold the item data from the API.
 	var paypalPostings models.PayPalJobs
 
-	// Decode the JSON response into the amazonpostings struct.
+	// Decode the JSON response into the  struct.
 	if err := json.NewDecoder(resp.Body).Decode(&paypalPostings); err != nil {
 		fmt.Print(err)
 		return nil, err
