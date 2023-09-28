@@ -25,6 +25,8 @@ func main() {
 	r.GET("/freshworks", handlers.FreshWorksHandler)
 	r.GET("/gojek", handlers.Gojekhandler)
 	r.GET("/mpl", handlers.MplHandler)
+	r.GET("/google", handlers.GoogleHandler)
+
 
 	r.GET("/syncwithSql", handlers.AllScrapersHandler)
 	r.GET("/getallJobsFromSQL", handlers.GetAllJobsFromSqlite)
