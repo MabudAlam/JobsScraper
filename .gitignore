@@ -1,6 +1,9 @@
 # Ignore environment files
 .env
 .env.*
+temp/
+logs/
+
 cred.json
 
 # Ignore compiled binary files (if any)
@@ -24,3 +27,5 @@ Thumbs.db
 /node_modules/
 /bower_components/
 firebase-config.json
+tmp/build-errors.log
+tmp/main
