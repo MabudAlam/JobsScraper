@@ -1,14 +1,14 @@
 package handlers
 
 import (
-	"net/http"
 	"goscraper/services"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func MplHandler(c *gin.Context) {
-	// Call fetchPostings to retrieve the data.
+
 	postings, err := services.MplScrapper()
 
 	if err != nil {

@@ -1,14 +1,15 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
 	"goscraper/services"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // GetPostingsHandler handles the /get-postings route.
 func Amazonhandler(c *gin.Context) {
-	// Call fetchPostings to retrieve the data.
+
 	postings, err := services.AmazonScrapper()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

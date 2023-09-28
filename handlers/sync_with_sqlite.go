@@ -46,6 +46,10 @@ var scrapers = []struct {
 		name:    "Google",
 		scraper: services.GoogleScraper,
 	},
+	{
+		name:    "Zoho",
+		scraper: services.ZohoScraper,
+	},
 }
 
 func AllScrapersHandler(c *gin.Context) {

@@ -1,15 +1,15 @@
 package handlers
 
 import (
-	"net/http"
 	"goscraper/services"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 // GetPostingsHandler handles the /get-postings route.
 func GetPostingsHandler(c *gin.Context) {
-	// Call fetchPostings to retrieve the data.
+
 	postings, err := services.CredScraper()
 
 	if err != nil {

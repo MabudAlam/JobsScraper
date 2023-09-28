@@ -1,15 +1,15 @@
 package handlers
 
 import (
-	"net/http"
 	"goscraper/services"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 // GetPostingsHandler handles the /get-postings route.
 func CourseraHandler(c *gin.Context) {
-	// Call fetchPostings to retrieve the data.
+
 	postings, err := services.CourseraScraper()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
