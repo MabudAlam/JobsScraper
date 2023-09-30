@@ -2,8 +2,9 @@ package services
 
 import (
 	"encoding/json"
+	"goscraper/models"
 	"net/http"
-"goscraper/models")
+)
 
 // Function to fetch postings from the API and convert them to Posting structs.
 func CredScraper() ([]models.Job, error) {
@@ -24,7 +25,6 @@ func CredScraper() ([]models.Job, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&credData); err != nil {
 		return nil, err
 	}
-	// fmt.Println("Mabud")
 
 	// Convert CRED data to Posting structs.
 	postings := make([]models.Job, len(credData))

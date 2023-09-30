@@ -15,10 +15,10 @@ var scrapers = []struct {
 	name    string
 	scraper func() ([]models.Job, error)
 }{
-	{
-		name:    "Amazon",
-		scraper: services.AmazonScrapper,
-	},
+	// {
+	// 	name:    "Amazon",
+	// 	scraper: services.AmazonScrapper,
+	// },
 	{
 		name:    "Atlassian",
 		scraper: services.AtlassianScrapper,
@@ -49,6 +49,10 @@ var scrapers = []struct {
 	{
 		name:    "Zoho",
 		scraper: services.ZohoScraper,
+	},
+	{
+		name:    "Jar App",
+		scraper: services.JarScraper,
 	},
 	// {
 	// 	name:    "PayPal",

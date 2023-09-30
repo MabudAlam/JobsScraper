@@ -24,6 +24,7 @@ func main() {
 	r.GET("/paypal", handlers.PayPalHandler)
 
 	r.GET("/zoho", handlers.ZohoHandler)
+	r.GET("/jar", handlers.JarHandler)
 
 	r.GET("/syncwithSql", handlers.AllScrapersHandler)
 	r.GET("/getallJobsFromSQL", handlers.GetAllJobsFromSqlite)
