@@ -7,10 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetPostingsHandler handles the /get-postings route.
-func GetPostingsHandler(c *gin.Context) {
+func JarHandler(c *gin.Context) {
 
-	postings, err := services.CredScraper()
+	postings, err := services.JarScraper()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

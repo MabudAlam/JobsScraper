@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	_ "modernc.org/sqlite" 
+	_ "modernc.org/sqlite"
 )
 
 // Defined a list of scraper functions
@@ -15,10 +15,10 @@ var scrapers = []struct {
 	name    string
 	scraper func() ([]models.Job, error)
 }{
-	{
-		name:    "Amazon",
-		scraper: services.AmazonScrapper,
-	},
+	// {
+	// 	name:    "Amazon",
+	// 	scraper: services.AmazonScrapper,
+	// },
 	{
 		name:    "Atlassian",
 		scraper: services.AtlassianScrapper,
@@ -42,7 +42,24 @@ var scrapers = []struct {
 		name:    "MPL",
 		scraper: services.MplScrapper,
 	},
+	{
+		name:    "Google",
+		scraper: services.GoogleScraper,
+	},
+	{
+		name:    "Zoho",
+		scraper: services.ZohoScraper,
+	},
+	{
+		name:    "Jar App",
+		scraper: services.JarScraper,
+	},
+	// {
+	// 	name:    "PayPal",
+	// 	scraper: services.PayPalScraper,
+	// },
 }
+
 func AllScrapersHandler(c *gin.Context) {
 	// Open or create the SQLite database file.
 	db, err := sql.Open("sqlite", "jobs.db") // Use "sqlite" as the driver name

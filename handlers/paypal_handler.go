@@ -7,16 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetPostingsHandler handles the /get-postings route.
-func GetPostingsHandler(c *gin.Context) {
+func PayPalHandler(c *gin.Context) {
 
-	postings, err := services.CredScraper()
-
+	postings, err := services.PayPalScraper()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
 	// Return the list of Posting structs as a JSON response.
 	c.JSON(http.StatusOK, postings)
 }
