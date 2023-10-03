@@ -30,9 +30,14 @@ var scrapers = []struct {
 	{
 		name:    "CRED",
 		scraper: services.CredScraper,
-	}, {
+	},
+	{
 		name:    "FreshWorks",
 		scraper: services.FreshWorksScraper,
+	},
+	{
+		name:    "Fi Money",
+		scraper: services.EpfiScraper,
 	},
 	{
 		name:    "Gojek",

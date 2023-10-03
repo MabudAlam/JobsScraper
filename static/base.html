@@ -239,6 +239,14 @@
         .apply-button a:hover {
             background-color: #0056b3;
         }
+        .centered-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60vh; 
+            font-size: 20px;
+            color: #333;
+        }
 
         .location-text {
             margin-right: 10px;
@@ -305,6 +313,8 @@
         <div id="jobCards"></div>
         </div>
     </center>
+    <div id="noJobsFoundMessage" class="centered-message">
+    </div>
 
     <script>
         let allJobsData = [];
@@ -312,24 +322,31 @@
         async function fetchAndDisplayJobs() {
             try {
                 const response = await fetch('http://localhost:8080/getallJobsFromSQL');
-
+        
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
-                }else{
+                } else {
                     console.log("ok");
                     console.log(response);
                 }
+        
                 allJobsData = await response.json();
-
+        
                 displayJobs(allJobsData);
             } catch (error) {
                 console.error('Error fetching or displaying job data:', error);
             }
         }
+        
 
         function displayJobs(data) {
             const jobCardsContainer = document.getElementById('jobCards');
             jobCardsContainer.innerHTML = '';
+            noJobsFoundMessage.innerHTML = ''; 
+
+            if (data.length === 0) {
+                displayNoJobsFoundMessage();
+            } else {
 
             data.forEach(job => {
                 const card = document.createElement('div');
@@ -364,6 +381,8 @@
                 jobCardsContainer.appendChild(card);
             });
 
+        }
+
 
         }
 
@@ -377,7 +396,11 @@
                 job.company.toLowerCase().includes(searchQuery)
             );
 
-            displayJobs(filteredJobs);
+            if (filteredJobs.length === 0) {
+                displayNoJobsFoundMessage();
+            } else {
+                displayJobs(filteredJobs);
+            }
         });
 
         document.querySelector('.searchbar input[type="text"]').addEventListener('keypress', function (e) {
@@ -386,6 +409,16 @@
                 document.getElementById('searchButton').click();
             }
         });
+
+        function displayNoJobsFoundMessage() {
+            const noJobsFoundMessage = document.getElementById('noJobsFoundMessage');
+            noJobsFoundMessage.innerHTML = '<p>No jobs found.</p>';
+        }
+
+        function displayNoInputMessage() {
+            const noJobsFoundMessage = document.getElementById('noJobsFoundMessage');
+            noJobsFoundMessage.innerHTML = '<p>Please enter a search query.</p>';
+        }
     </script>
 </body>
 
