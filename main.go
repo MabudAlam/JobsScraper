@@ -22,6 +22,7 @@ func main() {
 	r.GET("/mpl", handlers.MplHandler)
 	r.GET("/google", handlers.GoogleHandler)
 	r.GET("/fi", handlers.EpifiHandler)
+	r.GET("/frontrow", handlers.FrontRowHandler)
 
 	r.GET("/zoho", handlers.ZohoHandler)
 	r.GET("/jar", handlers.JarHandler)

@@ -40,6 +40,10 @@ var scrapers = []struct {
 		scraper: services.EpfiScraper,
 	},
 	{
+		name:    "FrontRow",
+		scraper: services.FrontRowScrapper,
+	},
+	{
 		name:    "Gojek",
 		scraper: services.GojekScraper,
 	},
