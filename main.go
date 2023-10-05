@@ -4,14 +4,19 @@ import (
 	"goscraper/handlers"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
 
-	r := gin.Default()
+	r := gin.New()
 	r.Use(CORSMiddleware())
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
 
 	r.GET("/cred", handlers.GetPostingsHandler)
 	r.GET("/atlassian", handlers.AtlassianHandler)
@@ -27,7 +32,23 @@ func main() {
 	r.GET("/zoho", handlers.ZohoHandler)
 	r.GET("/jar", handlers.JarHandler)
 
-	r.GET("/syncwithSql", handlers.AllScrapersHandler)
+	r.GET("/syncwithSql", func(c *gin.Context) {
+		password := c.Query("password")
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatalf("Error loading .env file: %v", err)
+		}
+
+		correctPassword := os.Getenv("SYNC_WITH_SQL_PASSWORD")
+
+		if password != correctPassword {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
+			return
+		}
+
+		// Call your handler function only if the password is correct
+		handlers.AllScrapersHandler(c)
+	})
 	r.GET("/getallJobsFromSQL", handlers.GetAllJobsFromSqlite)
 
 	r.GET("/", func(c *gin.Context) {
@@ -42,7 +63,7 @@ func main() {
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Allow requests from these origins
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "https://jobs-scraper-production.up.railway.app")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080, https://jobs-scraper-production.up.railway.app")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
