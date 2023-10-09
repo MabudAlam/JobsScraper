@@ -18,6 +18,13 @@ func main() {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
+	if _, exists := os.LookupEnv("RAILWAY_ENVIRONMENT"); exists == false {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatalf("Error loading .env file: %v", err)
+		}
+	}
+
 	r.GET("/cred", handlers.GetPostingsHandler)
 	r.GET("/atlassian", handlers.AtlassianHandler)
 	r.GET("/amazon", handlers.Amazonhandler)
@@ -34,10 +41,6 @@ func main() {
 
 	r.GET("/syncwithSql", func(c *gin.Context) {
 		password := c.Query("password")
-		err := godotenv.Load()
-		if err != nil {
-			log.Fatalf("Error loading .env file: %v", err)
-		}
 
 		correctPassword := os.Getenv("SYNC_WITH_SQL_PASSWORD")
 
@@ -46,7 +49,6 @@ func main() {
 			return
 		}
 
-		// Call your handler function only if the password is correct
 		handlers.AllScrapersHandler(c)
 	})
 	r.GET("/getallJobsFromSQL", handlers.GetAllJobsFromSqlite)
@@ -62,7 +64,6 @@ func main() {
 
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Allow requests from these origins
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080, https://jobs-scraper-production.up.railway.app")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
