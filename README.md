@@ -57,7 +57,6 @@ This will start the application, allowing you to access its features through you
 
 The Jobs Scraper package provides a set of powerful endpoints for scraping, managing, and synchronizing job postings. Here's a brief overview of the available endpoints:
 
-- `/cred`: Retrieves Firebase service account credentials.
 - `/atlassian`, `/amazon`, `/coursera`, `/freshworks`, `/gojek`, `/mpl`: Scrapes job postings from specific websites.
 - `/syncwithSql`: Synchronizes job postings with a SQL database.
 - `/getallJobsFromSQL`: Retrieves job postings from a SQL database.
