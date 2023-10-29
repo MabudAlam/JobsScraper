@@ -38,7 +38,7 @@ func AmazonScrapper() ([]models.Job, error) {
 			Location:  posting.Location,
 			CreatedAt: currentTime.Unix(),
 			Company:   "Amazon",
-			ApplyURL:  posting.URLNextStep,
+			ApplyURL:  "https://www.amazon.jobs" + posting.JobPath,
 			ImageUrl:  "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/2500px-Amazon_icon.svg.png",
 		}
 	}
