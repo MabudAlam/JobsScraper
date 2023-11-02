@@ -63,6 +63,10 @@ var scrapers = []struct {
 		name:    "Jar App",
 		scraper: services.JarScraper,
 	},
+	{
+		name:    "Paytm",
+		scraper: services.PaytmScraper,
+	},
 	// {
 	// 	name:    "PayPal",
 	// 	scraper: services.PayPalScraper,
