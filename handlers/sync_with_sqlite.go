@@ -67,6 +67,10 @@ var scrapers = []struct {
 		name:    "Paytm",
 		scraper: services.PaytmScraper,
 	},
+	{
+		name:    "Sardine",
+		scraper: services.SardineScraper,
+	},
 	// {
 	// 	name:    "PayPal",
 	// 	scraper: services.PayPalScraper,
