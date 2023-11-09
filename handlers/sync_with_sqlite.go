@@ -86,34 +86,6 @@ func AllScrapersHandler(c *gin.Context) {
 	}
 	defer db.Close()
 
-	// Create the jobs table if it doesn't exist.
-	createTable := `
-		CREATE TABLE IF NOT EXISTS jobs (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			title TEXT,
-			location TEXT,
-			created_at INTEGER,
-			company TEXT,
-			apply_url TEXT,
-			image_url TEXT
-		);
-	`
-	_, err = db.Exec(createTable)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	// Clear existing job postings from the database.
-	clearTable := `
-		DELETE FROM jobs;
-	`
-	_, err = db.Exec(clearTable)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
 	// Create an empty slice to hold all the job postings.
 	var allPostings []models.Job
 
@@ -127,19 +99,51 @@ func AllScrapersHandler(c *gin.Context) {
 		allPostings = append(allPostings, postings...)
 	}
 
-	// Loop through the job postings and insert them into the database.
-	for _, posting := range allPostings {
-		insertSQL := `
-			INSERT INTO jobs (title, location, created_at, company, apply_url, image_url)
-			VALUES (?, ?, ?, ?, ?, ?);
-		`
-		_, err := db.Exec(insertSQL, posting.Title, posting.Location, posting.CreatedAt, posting.Company, posting.ApplyURL, posting.ImageUrl)
+	if allPostings != nil {
+		clearTable := `
+		DELETE FROM jobs;
+	`
+		_, err = db.Exec(clearTable)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+
+		createTable := `
+			CREATE TABLE IF NOT EXISTS jobs (
+				id INTEGER PRIMARY KEY AUTOINCREMENT,
+				title TEXT,
+				location TEXT,
+				created_at INTEGER,
+				company TEXT,
+				apply_url TEXT,
+				image_url TEXT
+			);
+		`
+		_, err = db.Exec(createTable)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		// Loop through the job postings and insert them into the database.
+		for _, posting := range allPostings {
+			insertSQL := `
+				INSERT INTO jobs (title, location, created_at, company, apply_url, image_url)
+				VALUES (?, ?, ?, ?, ?, ?);
+			`
+			_, err := db.Exec(insertSQL, posting.Title, posting.Location, posting.CreatedAt, posting.Company, posting.ApplyURL, posting.ImageUrl)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
+			}
+		}
+		c.JSON(http.StatusOK, allPostings)
+	} else {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "No data found"})
+		return
 	}
 
 	// Return the aggregated job postings as a JSON response.
-	c.JSON(http.StatusOK, allPostings)
+
 }
