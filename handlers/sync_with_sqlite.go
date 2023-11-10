@@ -2,15 +2,26 @@ package handlers
 
 import (
 	"database/sql"
+	"log"
+	"net/http"
+
 	"goscraper/models"
 	"goscraper/services"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	_ "modernc.org/sqlite"
 )
 
-// Defined a list of scraper functions
+var db *sql.DB
+
+func init() {
+	var err error
+	db, err = sql.Open("sqlite", "jobs.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 var scrapers = []struct {
 	name    string
 	scraper func() ([]models.Job, error)
@@ -80,73 +91,82 @@ var scrapers = []struct {
 	// },
 }
 
+const clearTable = `DELETE FROM jobs;`
+
+const createTable = `
+	CREATE TABLE IF NOT EXISTS jobs (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		title TEXT,
+		location TEXT,
+		created_at INTEGER,
+		company TEXT,
+		apply_url TEXT,
+		image_url TEXT
+	);
+`
+
+const insertSQL = `
+	INSERT INTO jobs (title, location, created_at, company, apply_url, image_url)
+	VALUES (?, ?, ?, ?, ?, ?);
+`
+
+func handleError(c *gin.Context, err error) {
+	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+}
+
 func AllScrapersHandler(c *gin.Context) {
-	// Open or create the SQLite database file.
-	db, err := sql.Open("sqlite", "jobs.db") // Use "sqlite" as the driver name
+	tx, err := db.Begin()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		handleError(c, err)
 		return
 	}
-	defer db.Close()
+	defer func() {
+		if err := tx.Rollback(); err != nil {
+			log.Println("Rollback failed:", err)
+		}
+	}()
 
-	// Create an empty slice to hold all the job postings.
 	var allPostings []models.Job
 
-	// Loop through the list of scrapers and call each one.
 	for _, scraper := range scrapers {
 		postings, err := scraper.scraper()
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			handleError(c, err)
 			return
 		}
 		allPostings = append(allPostings, postings...)
 	}
 
-	if allPostings != nil {
-		clearTable := `
-		DELETE FROM jobs;
-	`
-		_, err = db.Exec(clearTable)
+	if len(allPostings) > 0 {
+		_, err := tx.Exec(clearTable)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			handleError(c, err)
 			return
 		}
 
-		createTable := `
-			CREATE TABLE IF NOT EXISTS jobs (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				title TEXT,
-				location TEXT,
-				created_at INTEGER,
-				company TEXT,
-				apply_url TEXT,
-				image_url TEXT
-			);
-		`
-		_, err = db.Exec(createTable)
+		_, err = tx.Exec(createTable)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			handleError(c, err)
 			return
 		}
 
-		// Loop through the job postings and insert them into the database.
 		for _, posting := range allPostings {
-			insertSQL := `
-				INSERT INTO jobs (title, location, created_at, company, apply_url, image_url)
-				VALUES (?, ?, ?, ?, ?, ?);
-			`
-			_, err := db.Exec(insertSQL, posting.Title, posting.Location, posting.CreatedAt, posting.Company, posting.ApplyURL, posting.ImageUrl)
+			_, err := tx.Exec(insertSQL, posting.Title, posting.Location, posting.CreatedAt, posting.Company, posting.ApplyURL, posting.ImageUrl)
 			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				handleError(c, err)
 				return
 			}
 		}
+
+		err = tx.Commit()
+		if err != nil {
+			handleError(c, err)
+			return
+		}
+
 		c.JSON(http.StatusOK, allPostings)
+		log.Printf("Inserted %d jobs into the database", len(allPostings))
 	} else {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "No data found"})
-		return
 	}
-
-	// Return the aggregated job postings as a JSON response.
-
 }

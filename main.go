@@ -2,6 +2,7 @@ package main
 
 import (
 	"goscraper/handlers"
+	"goscraper/services"
 	"log"
 	"net/http"
 	"os"
@@ -24,23 +25,57 @@ func main() {
 			log.Fatalf("Error loading .env file: %v", err)
 		}
 	}
+	r.GET("/cred", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.CredScraper)
+	})
+	r.GET(("/atlassian"), func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.AtlassianScrapper)
+	})
+	r.GET("/amazon", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.AmazonScrapper)
+	})
+	r.GET("/coursera", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.CourseraScraper)
+	})
+	r.GET("/freshworks", func(c *gin.Context) {
 
-	r.GET("/cred", handlers.GetPostingsHandler)
-	r.GET("/atlassian", handlers.AtlassianHandler)
-	r.GET("/amazon", handlers.Amazonhandler)
-	r.GET("/coursera", handlers.CourseraHandler)
-	r.GET("/freshworks", handlers.FreshWorksHandler)
-	r.GET("/gojek", handlers.Gojekhandler)
-	r.GET("/mpl", handlers.MplHandler)
-	r.GET("/google", handlers.GoogleHandler)
-	r.GET("/fi", handlers.EpifiHandler)
-	r.GET("/frontrow", handlers.FrontRowHandler)
-	r.GET("/sardine", handlers.SardineScraper)
+		handlers.HandleScrapingRequest(c, services.FreshWorksScraper)
+	})
+	r.GET("/gojek", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.GojekScraper)
+	})
+	r.GET("/mpl", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.MplScrapper)
+	})
+	r.GET("/google", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.GoogleScraper)
+	})
+	r.GET("/fi", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.EpfiScraper)
+	})
+	r.GET("/frontrow", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.FrontRowScrapper)
+	})
+	r.GET("/sardine", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.SardineScraper)
+	})
+	r.GET("/zoho", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.ZohoScraper)
 
-	r.GET("/zoho", handlers.ZohoHandler)
-	r.GET("/jar", handlers.JarHandler)
-	r.GET("/paytm", handlers.PaytmHandler)
-	r.GET("/fincent", handlers.FincentHandler)
+	})
+	r.GET("/jar", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.JarScraper)
+	})
+	r.GET("/paytm", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.PaytmScraper)
+	})
+	r.GET("/fincent", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.FincentScraper)
+	})
+	r.GET("/paypal", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.PayPalScraper)
+	})
+
 	r.GET("/syncwithSql", func(c *gin.Context) {
 		password := c.Query("password")
 
@@ -78,9 +113,4 @@ func CORSMiddleware() gin.HandlerFunc {
 
 		c.Next()
 	}
-}
-
-// RootHandler handles the root route (/).
-func RootHandler(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{"hello": "Mabud"})
 }
