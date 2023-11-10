@@ -321,7 +321,8 @@
 
         async function fetchAndDisplayJobs() {
             try {
-                const response = await fetch('http://localhost:8080/getallJobsFromSQL');
+                const response = await fetch('https://jobs-scraper-production.up.railway.app/getallJobsFromSQL');
+                <!-- https://jobs-scraper-production.up.railway.app/getallJobsFromSQL -->
         
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -390,16 +391,26 @@
 
         document.getElementById('searchButton').addEventListener('click', function () {
             const searchQuery = document.querySelector('.searchbar input[type="text"]').value.toLowerCase();
-            const filteredJobs = allJobsData.filter(job =>
-                job.title.toLowerCase().includes(searchQuery) ||
-                job.location.toLowerCase().includes(searchQuery) ||
-                job.company.toLowerCase().includes(searchQuery)
-            );
-
-            if (filteredJobs.length === 0) {
-                displayNoJobsFoundMessage();
+            const noJobsFoundMessage = document.getElementById('noJobsFoundMessage');
+    
+            if (searchQuery.trim() === '') {
+                displayNoInputMessage(noJobsFoundMessage);
             } else {
-                displayJobs(filteredJobs);
+                const filteredJobs = allJobsData.filter(job =>
+                    job.title.toLowerCase().includes(searchQuery) ||
+                    job.location.toLowerCase().includes(searchQuery) ||
+                    job.company.toLowerCase().includes(searchQuery)
+                );
+    
+                if (filteredJobs.length === 0) {
+                    card.className = 'career-card';
+                    card.innerHTML = ``;
+
+                    displayNoJobsFoundMessage(noJobsFoundMessage);
+                } else {
+                    displayJobs(filteredJobs);
+                    noJobsFoundMessage.innerHTML = ''; // Clear the no jobs found message
+                }
             }
         });
 
@@ -409,15 +420,13 @@
                 document.getElementById('searchButton').click();
             }
         });
-
-        function displayNoJobsFoundMessage() {
-            const noJobsFoundMessage = document.getElementById('noJobsFoundMessage');
-            noJobsFoundMessage.innerHTML = '<p>No jobs found.</p>';
+    
+        function displayNoJobsFoundMessage(element) {
+            element.innerHTML = '<p>No jobs found.</p>';
         }
-
-        function displayNoInputMessage() {
-            const noJobsFoundMessage = document.getElementById('noJobsFoundMessage');
-            noJobsFoundMessage.innerHTML = '<p>Please enter a search query.</p>';
+    
+        function displayNoInputMessage(element) {
+            element.innerHTML = '<p>Please enter a search query.</p>';
         }
     </script>
 </body>

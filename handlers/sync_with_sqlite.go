@@ -38,6 +38,9 @@ var scrapers = []struct {
 	{
 		name:    "Fi Money",
 		scraper: services.EpfiScraper,
+	}, {
+		name:    "Fincent",
+		scraper: services.FincentScraper,
 	},
 	{
 		name:    "FrontRow",

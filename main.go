@@ -35,10 +35,12 @@ func main() {
 	r.GET("/google", handlers.GoogleHandler)
 	r.GET("/fi", handlers.EpifiHandler)
 	r.GET("/frontrow", handlers.FrontRowHandler)
+	r.GET("/sardine", handlers.SardineScraper)
 
 	r.GET("/zoho", handlers.ZohoHandler)
 	r.GET("/jar", handlers.JarHandler)
-
+	r.GET("/paytm", handlers.PaytmHandler)
+	r.GET("/fincent", handlers.FincentHandler)
 	r.GET("/syncwithSql", func(c *gin.Context) {
 		password := c.Query("password")
 
@@ -64,7 +66,7 @@ func main() {
 
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080, https://jobs-scraper-production.up.railway.app")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "https://jobs-scraper-production.up.railway.app/")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
