@@ -425,7 +425,22 @@
                 document.getElementById('searchButton').click();
             }
         });
-
+        
+        document.querySelector('.searchbar input[type="text"]').addEventListener('input', function () {
+            performSearch();
+        });
+        function performSearch() {
+            const searchQuery = document.querySelector('.searchbar input[type="text"]').value.toLowerCase();
+            const filteredJobs = allJobsData.filter(job =>
+                job.title.toLowerCase().includes(searchQuery) ||
+                job.location.toLowerCase().includes(searchQuery) ||
+                job.company.toLowerCase().includes(searchQuery)
+            );
+        
+            displayJobs(filteredJobs);
+        }
+        
+        
       
     </script>
 </body>
