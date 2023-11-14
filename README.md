@@ -1,6 +1,6 @@
 # Jobs Scraper
 
-![Screenshot](https://github.com/Pavel401/Jobs-Scraper/assets/47685150/e47e5503-f824-47a2-ad63-ed66c298f350)
+![Screenshot](https://github.com/Pavel401/Jobs-Scraper/assets/47685150/bec93412-7c81-443b-990a-9fc0d92bfadc)
 
 ## Table of Contents
 
