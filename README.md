@@ -24,24 +24,7 @@ Before getting started with the Jobs Scraper, please ensure you have the followi
 - [Go Programming Language](https://golang.org/)
 - [Gin Web Framework](https://github.com/gin-gonic/gin)
 
-## Installation
 
-To install the Jobs Scraper package, follow these simple steps:
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd <repository-directory>
-   ```
-
-3. Build the Go application:
-   ```bash
-   go build
-   ```
 
 ## Usage
 
