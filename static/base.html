@@ -279,6 +279,14 @@
             background-color: #fff;
             transition: transform 0.2s, box-shadow 0.2s;
         }
+        .centered-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+            font-size: 20px;
+            color: #333;
+        }
 
         @media screen and (max-width: 1200px) {
             .career-card {
@@ -308,31 +316,27 @@
         <button id="searchButton" class="search-button">Search</button>
 
     </nav>
-    <center>
-        <div class="job-card-container">
-        <div id="jobCards"></div>
-        </div>
-    </center>
-    <div id="noJobsFoundMessage" class="centered-message">
-    </div>
+
+    <div id="jobCards"></div>
+ 
 
     <script>
         let allJobsData = [];
 
         async function fetchAndDisplayJobs() {
             try {
-                const response = await fetch('https://jobs-scraper-production.up.railway.app/getallJobsFromSQL');
+                const response = await fetch('http://localhost:8080/getallJobsFromSQL');
         
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 } else {
-                    console.log("ok");
                     console.log(response);
+                    allJobsData = await response.json();
+        
+                    displayJobs(allJobsData);
                 }
         
-                allJobsData = await response.json();
-        
-                displayJobs(allJobsData);
+
             } catch (error) {
                 console.error('Error fetching or displaying job data:', error);
             }
@@ -342,10 +346,21 @@
         function displayJobs(data) {
             const jobCardsContainer = document.getElementById('jobCards');
             jobCardsContainer.innerHTML = '';
-            noJobsFoundMessage.innerHTML = ''; 
 
             if (data.length === 0) {
-                displayNoJobsFoundMessage();
+         
+
+
+                const centeredMessage = document.createElement('div');
+                centeredMessage.className = 'centered-message';
+                centeredMessage.innerHTML = `
+                    <div>
+                        <p>Sorry, no jobs found.</p>
+                    </div>
+                `;
+                jobCardsContainer.appendChild(centeredMessage);
+
+
             } else {
 
             data.forEach(job => {
@@ -389,6 +404,7 @@
         window.onload = fetchAndDisplayJobs();
 
         document.getElementById('searchButton').addEventListener('click', function () {
+            console.log('search button clicked');
             const searchQuery = document.querySelector('.searchbar input[type="text"]').value.toLowerCase();
             const filteredJobs = allJobsData.filter(job =>
                 job.title.toLowerCase().includes(searchQuery) ||
@@ -397,7 +413,7 @@
             );
 
             if (filteredJobs.length === 0) {
-                displayNoJobsFoundMessage();
+                displayJobs(filteredJobs);
             } else {
                 displayJobs(filteredJobs);
             }
@@ -410,15 +426,7 @@
             }
         });
 
-        function displayNoJobsFoundMessage() {
-            const noJobsFoundMessage = document.getElementById('noJobsFoundMessage');
-            noJobsFoundMessage.innerHTML = '<p>No jobs found.</p>';
-        }
-
-        function displayNoInputMessage() {
-            const noJobsFoundMessage = document.getElementById('noJobsFoundMessage');
-            noJobsFoundMessage.innerHTML = '<p>Please enter a search query.</p>';
-        }
+      
     </script>
 </body>
 
