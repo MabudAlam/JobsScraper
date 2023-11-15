@@ -35,6 +35,10 @@ var scrapers = []struct {
 		scraper: services.AtlassianScrapper,
 	},
 	{
+		name:    "Niyo Solutions",
+		scraper: services.NiyoSolutionScraper,
+	},
+	{
 		name:    "Coursera",
 		scraper: services.CourseraScraper,
 	},
