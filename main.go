@@ -75,6 +75,9 @@ func main() {
 	r.GET("/paypal", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.PayPalScraper)
 	})
+	r.GET("/niyo", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.NiyoSolutionScraper)
+	})
 
 	r.GET("/syncwithSql", func(c *gin.Context) {
 		password := c.Query("password")
