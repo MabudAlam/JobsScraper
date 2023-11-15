@@ -1,6 +1,6 @@
 # Jobs Scraper
 
-![Screenshot](https://github.com/Pavel401/Jobs-Scraper/assets/47685150/e47e5503-f824-47a2-ad63-ed66c298f350)
+![Screenshot](https://github.com/Pavel401/Jobs-Scraper/assets/47685150/bec93412-7c81-443b-990a-9fc0d92bfadc)
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@
 
 ## Introduction
 
-The Jobs Scraper is a powerful Go application designed for scraping job postings from a variety of websites and storing them in a Firebase Firestore database. Additionally, it offers endpoints for retrieving and synchronizing job postings, making it a valuable tool for job seekers and developers alike.
+The Jobs Scraper is a powerful Go application designed for scraping job postings from a variety of websites and storing them in an SQLite database. Additionally, it offers endpoints for retrieving and synchronizing job postings, making it a valuable tool for job seekers and developers alike.
 
 ## Prerequisites
 
@@ -24,24 +24,7 @@ Before getting started with the Jobs Scraper, please ensure you have the followi
 - [Go Programming Language](https://golang.org/)
 - [Gin Web Framework](https://github.com/gin-gonic/gin)
 
-## Installation
 
-To install the Jobs Scraper package, follow these simple steps:
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd <repository-directory>
-   ```
-
-3. Build the Go application:
-   ```bash
-   go build
-   ```
 
 ## Usage
 
@@ -80,4 +63,36 @@ This project is licensed under the [License Name] License - see the [LICENSE](LI
 
 ---
 
-Feel free to make any further adjustments or additions as needed for your specific project.
+# To-Do List
+
+
+1. **Improved Frontend:**
+   - [ ] Enhance the user interface of the application.
+   - [ ] Implement responsive design for better usability on different devices.
+   - [ ] Add styling and improve overall aesthetics.
+
+2. **Filters:**
+   - [ ] Implement advanced filtering options for job searches.
+   - [ ] Allow users to filter jobs based on location, job type, and other relevant criteria.
+
+3. **Better Scraping Methods:**
+   - [ ] Explore and implement more efficient and reliable scraping methods for job postings.
+   - [ ] Handle edge cases gracefully and improve the accuracy of data extraction.
+
+4. **Fix Missing Data:**
+   - [ ] Address and fix any issues related to missing or incomplete data during the scraping process.
+   - [ ] Ensure that all relevant information is captured and stored accurately.
+
+5. **Unit Testing:**
+   - [ ] Implement unit tests to ensure the reliability of critical components.
+   - [ ] Set up automated testing processes for continuous integration.
+
+6. **Error Handling:**
+    - [ ] Improve error handling mechanisms to provide informative error messages to users.
+    - [ ] Log errors for debugging and troubleshooting purposes.
+
+7. **Refactoring:**
+    - [ ] Refactor code for better readability and maintainability.
+    - [ ] Break down complex functions into smaller, more modular components.
+
+
