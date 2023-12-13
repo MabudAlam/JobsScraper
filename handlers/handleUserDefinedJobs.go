@@ -125,6 +125,9 @@ func GetAllJobs(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 			return
 		}
+
+		job.Skills = strings.Split(skillsString, ",")
+
 		jobs = append(jobs, job)
 	}
 
