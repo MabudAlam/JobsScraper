@@ -2,7 +2,6 @@ package main
 
 import (
 	"goscraper/handlers"
-	"goscraper/models"
 	"goscraper/services"
 	"log"
 	"net/http"
@@ -80,68 +79,6 @@ func main() {
 		handlers.HandleScrapingRequest(c, services.NiyoSolutionScraper)
 	})
 
-	r.POST("/insertCustomJob", func(c *gin.Context) {
-		var input models.UserDefinedJob
-
-		if err := c.ShouldBindJSON(&input); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		job := models.UserDefinedJob{
-			Title:       input.Title,
-			ID:          input.ID,
-			Location:    input.Location,
-			ApplyURL:    input.ApplyURL,
-			ImageUrl:    input.ImageUrl,
-			CreatedAt:   input.CreatedAt,
-			Company:     input.Company,
-			Expired:     input.Expired,
-			Salary:      input.Salary,
-			Skills:      input.Skills,
-			Description: input.Description,
-		}
-
-		handlers.InsertJob(c, job)
-
-	})
-	r.POST("/updateCustomJob", func(c *gin.Context) {
-		var input models.UserDefinedJob
-
-		if err := c.ShouldBindJSON(&input); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		job := models.UserDefinedJob{
-			Title:       input.Title,
-			ID:          input.ID,
-			Location:    input.Location,
-			ApplyURL:    input.ApplyURL,
-			ImageUrl:    input.ImageUrl,
-			CreatedAt:   input.CreatedAt,
-			Company:     input.Company,
-			Expired:     input.Expired,
-			Salary:      input.Salary,
-			Skills:      input.Skills,
-			Description: input.Description,
-		}
-
-		handlers.UpdateJob(c, job)
-
-	})
-	r.POST("/deleteCustomJob", func(c *gin.Context) {
-		var input models.UserDefinedJob
-
-		if err := c.ShouldBindJSON(&input); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		handlers.DeleteJob(c, input.ID)
-
-	})
-	r.GET("/getallCustomJobs", handlers.GetAllJobs)
 	r.GET("/syncwithSql", func(c *gin.Context) {
 		password := c.Query("password")
 
@@ -154,14 +91,13 @@ func main() {
 
 		handlers.AllScrapersHandler(c)
 	})
-
 	r.GET("/getallJobsFromSQL", handlers.GetAllJobsFromSqlite)
 
 	r.GET("/", func(c *gin.Context) {
 		c.File("static/base.html")
 	})
 
-	if err := r.Run(":" + "9090"); err != nil {
+	if err := r.Run(":" + "8080"); err != nil {
 		log.Panicf("error: %s", err)
 	}
 }
