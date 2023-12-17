@@ -43,7 +43,7 @@ The Jobs Scraper package provides a set of powerful endpoints for scraping, mana
 - `/atlassian`, `/amazon`, `/coursera`, `/freshworks`, `/gojek`, `/mpl`: Scrapes job postings from specific websites.
 - `/syncwithSql`: Synchronizes job postings with a SQL database.
 - `/getallJobsFromSQL`: Retrieves job postings from a SQL database.
-- `/`: Serves an HTML file (index.html).
+- `/`: Serves an HTML file (static/base.html).
 
 ## Configuration
 
