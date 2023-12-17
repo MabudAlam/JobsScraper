@@ -47,7 +47,7 @@ The Jobs Scraper package provides a set of powerful endpoints for scraping, mana
 
 ## Configuration
 
-To configure the application, you can set environment variables in an `.env` file. For example:
+To run the application, you have to create a `.env` file. To configure you can set environment variables in the file. For example:
 
 ```env
 SYNC_WITH_SQL_PASSWORD=password
