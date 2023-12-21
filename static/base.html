@@ -325,7 +325,7 @@
 
         async function fetchAndDisplayJobs() {
             try {
-                const response = await fetch('https://jobs-scraper-production.up.railway.app/getallJobsFromSQL');
+                const response = await fetch(`${window.location.href}getallJobsFromSQL`);
         
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
