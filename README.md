@@ -59,7 +59,7 @@ Contributions to this project are highly encouraged! If you have ideas for impro
 
 ## License
 
-This project is licensed under the [License Name] License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [GPL-3.0 license] License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
