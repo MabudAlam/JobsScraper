@@ -4,41 +4,60 @@ import (
 	"encoding/json"
 	"fmt"
 	"goscraper/models"
+	"io"
 	"net/http"
+	"time"
 )
 
 func AtlassianScrapper() ([]models.Job, error) {
 	// URL of the API to fetch data from.
-	url := "https://www.atlassian.com/.rest/postings"
+	url := "https://www.atlassian.com/endpoint/careers/listings"
 
 	// Make an HTTP GET request to the API.
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}(resp.Body)
 
 	// Create a slice to hold the item data from the API.
-	var atlassianpostins models.Temperatures
+	var atlassianpostings []models.Posting
 
-	// Decode the JSON response into the atlassianpostins struct.
-	if err := json.NewDecoder(resp.Body).Decode(&atlassianpostins); err != nil {
-		fmt.Print(err)
+	// Decode the JSON response into the atlassianpostings struct.
+	jsonByte, err := io.ReadAll(resp.Body)
+	if err != nil {
 		return nil, err
 	}
 
-	// Create a slice to hold the job postings.
-	postings := make([]models.Job, len(atlassianpostins.Postings))
+	err = json.Unmarshal(jsonByte, &atlassianpostings)
+	if err != nil {
+		return nil, err
+	}
 
-	// Iterate over the job postings and convert them to models.Job structs.
-	for i, posting := range atlassianpostins.Postings {
+	// Create a slice to hold the atlassianpostings postings.
+	postings := make([]models.Job, len(atlassianpostings))
+
+	// Iterate over the atlassianpostings and convert them to models.Job structs.
+	for i, obj := range atlassianpostings {
+
+		var locationValue = obj.Location[0]
+		if len(obj.Location) > 1 {
+			locationValue = "Many Locations"
+		}
+
 		postings[i] = models.Job{
-			Title:     posting.Text,
-			ID:        posting.ID,
-			Location:  posting.Categories.Location,
-			CreatedAt: posting.CreatedAt,
+			Title:     obj.Title,
+			ID:        obj.LeverId,
+			Location:  locationValue,
+			CreatedAt: time.Now().Unix(),
 			Company:   "Atlassian",
-			ApplyURL:  posting.Urls.ApplyURL,
+			ApplyURL:  obj.ApplyUrl,
 			ImageUrl:  "https://seeklogo.com/images/A/atlassian-logo-DF2FCF6E4D-seeklogo.com.png",
 		}
 	}
