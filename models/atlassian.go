@@ -19,20 +19,17 @@ type Temperatures struct {
 }
 
 type Posting struct {
-	Requisition *Requisition `json:"requisition"`
-	ID          string       `json:"id"`
-	Text        string       `json:"text"`
-	State       State        `json:"state"`
-	User        string       `json:"user"`
-	Owner       string       `json:"owner"`
-	Categories  Categories   `json:"categories"`
-	Tags        []string     `json:"tags"`
-	Content     Content      `json:"content"`
-	Followers   []string     `json:"followers"`
-	ReqCode     *ReqCode     `json:"reqCode"`
-	Urls        Urls         `json:"urls"`
-	CreatedAt   int64        `json:"createdAt"`
-	UpdatedAt   int64        `json:"updatedAt"`
+	Id               int      `json:"id"`
+	PortalId         int      `json:"portalId"`
+	Title            string   `json:"title"`
+	Type             string   `json:"type"`
+	Location         []string `json:"locations"`
+	Category         string   `json:"category"`
+	Overview         string   `json:"overview"`
+	Responsibilities string   `json:"responsibilities"`
+	Qualifications   string   `json:"qualifications"`
+	ApplyUrl         string   `json:"applyUrl"`
+	LeverId          string   `json:"leverId"`
 }
 
 type Categories struct {
