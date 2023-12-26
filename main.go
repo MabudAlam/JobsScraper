@@ -13,6 +13,13 @@ import (
 )
 
 func main() {
+	r := setupRouter()
+
+	if err := r.Run(":" + "8080"); err != nil {
+		log.Panicf("error: %s", err)
+	}
+}
+func setupRouter() *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 
 	r := gin.New()
@@ -161,9 +168,7 @@ func main() {
 		c.File("static/base.html")
 	})
 
-	if err := r.Run(":" + "8080"); err != nil {
-		log.Panicf("error: %s", err)
-	}
+	return r
 }
 
 func CORSMiddleware() gin.HandlerFunc {
