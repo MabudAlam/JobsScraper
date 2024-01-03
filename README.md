@@ -5,6 +5,7 @@
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [Mobile App](#mobile-app)  
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -12,10 +13,14 @@
 - [Endpoints](#endpoints)
 - [Contributing](#contributing)
 - [License](#license)
-
+- 
 ## Introduction
 
 The Jobs Scraper is a powerful Go application designed for scraping job postings from a variety of websites and storing them in an SQLite database. Additionally, it offers endpoints for retrieving and synchronizing job postings, making it a valuable tool for job seekers and developers alike.
+
+## Mobile App
+
+Repo: https://github.com/Pavel401/JobScraper-Mobile
 
 ## Prerequisites
 
