@@ -45,12 +45,10 @@ func AtlassianScrapper() ([]models.Job, error) {
 
 	// Iterate over the atlassianpostings and convert them to models.Job structs.
 	for i, obj := range atlassianpostings {
-
-		var locationValue = obj.Location[0]
-		if len(obj.Location) > 1 {
-			locationValue = "Many Locations"
+		locationValue := ""
+		if len(obj.Location) > 0 {
+			locationValue = obj.Location[0]
 		}
-
 		postings[i] = models.Job{
 			Title:     obj.Title,
 			ID:        obj.LeverId,
@@ -58,7 +56,7 @@ func AtlassianScrapper() ([]models.Job, error) {
 			CreatedAt: time.Now().Unix(),
 			Company:   "Atlassian",
 			ApplyURL:  obj.ApplyUrl,
-			ImageUrl:  "https://seeklogo.com/images/A/atlassian-logo-DF2FCF6E4D-seeklogo.com.png",
+			ImageUrl:  "https://res.cloudinary.com/dc0tfxkph/image/upload/v1704286280/Go%20Scraper/u4eaxsknspamducttdh3.png",
 		}
 	}
 
