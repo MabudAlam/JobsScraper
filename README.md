@@ -7,13 +7,10 @@
 - [Introduction](#introduction)
 - [Mobile App](#mobile-app)  
 - [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
 - [Endpoints](#endpoints)
 - [Contributing](#contributing)
 - [License](#license)
-- 
+- [Contributors](#contributors)
 ## Introduction
 
 The Jobs Scraper is a powerful Go application designed for scraping job postings from a variety of websites and storing them in an SQLite database. Additionally, it offers endpoints for retrieving and synchronizing job postings, making it a valuable tool for job seekers and developers alike.
@@ -33,13 +30,16 @@ Before getting started with the Jobs Scraper, please ensure you have the followi
 
 ## How to setup
 
-To run the Jobs Scraper application, execute the compiled binary:
+To run the application, you have to create a `.env` file. To configure you can set environment variables in the file. For example:
+
+```env
+SYNC_WITH_SQL_PASSWORD=password
+```
+
 
 ```bash
 go run main.go
 ```
-
-This will start the application, allowing you to access its features through your web browser or via HTTP requests.
 
 ## Endpoints
 
@@ -50,13 +50,6 @@ The Jobs Scraper package provides a set of powerful endpoints for scraping, mana
 - `/getallJobsFromSQL`: Retrieves job postings from a SQL database.
 - `/`: Serves an HTML file (static/base.html).
 
-## Configuration
-
-To run the application, you have to create a `.env` file. To configure you can set environment variables in the file. For example:
-
-```env
-SYNC_WITH_SQL_PASSWORD=password
-```
 
 ## Contributing
 
@@ -201,42 +194,19 @@ click on `Create pull request`.
 Congrats! You just completed the standard _fork -> clone -> edit -> pull request_ workflow that you'll encounter often as a contributor!
 
 
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+
 ## License
 
 This project is licensed under the [GPL-3.0 license] License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## To-Do List
-
-
-1. **Improved Frontend:**
-   - [ ] Enhance the user interface of the application.
-   - [ ] Implement responsive design for better usability on different devices.
-   - [ ] Add styling and improve overall aesthetics.
-
-2. **Filters:**
-   - [ ] Implement advanced filtering options for job searches.
-   - [ ] Allow users to filter jobs based on location, job type, and other relevant criteria.
-
-3. **Better Scraping Methods:**
-   - [ ] Explore and implement more efficient and reliable scraping methods for job postings.
-   - [ ] Handle edge cases gracefully and improve the accuracy of data extraction.
-
-4. **Fix Missing Data:**
-   - [ ] Address and fix any issues related to missing or incomplete data during the scraping process.
-   - [ ] Ensure that all relevant information is captured and stored accurately.
-
-5. **Unit Testing:**
-   - [ ] Implement unit tests to ensure the reliability of critical components.
-   - [ ] Set up automated testing processes for continuous integration.
-
-6. **Error Handling:**
-    - [ ] Improve error handling mechanisms to provide informative error messages to users.
-    - [ ] Log errors for debugging and troubleshooting purposes.
-
-7. **Refactoring:**
-    - [ ] Refactor code for better readability and maintainability.
-    - [ ] Break down complex functions into smaller, more modular components.
-
 
