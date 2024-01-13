@@ -15,6 +15,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "GitWiz01",
+      "name": "Abhishek Parmar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/123467623?v=4",
+      "profile": "https://linkfree.eddiehub.io/GitWiz01",
+      "contributions": [
+        "doc",
+        "design",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
