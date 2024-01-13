@@ -199,6 +199,10 @@ Congrats! You just completed the standard _fork -> clone -> edit -> pull request
 
 ## Contributors
 
+[![All Contributors](https://img.shields.io/github/all-contributors/Pavel401/Jobs-Scraper?color=ee8449&style=flat-square)](#contributors)
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
