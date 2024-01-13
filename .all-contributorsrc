@@ -26,6 +26,19 @@
         "design",
         "ideas"
       ]
+    },
+    {
+      "login": "Pavel401",
+      "name": "Mabud Alam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47685150?v=4",
+      "profile": "https://mabud.vercel.app/",
+      "contributions": [
+        "code",
+        "design",
+        "bug",
+        "maintenance",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
