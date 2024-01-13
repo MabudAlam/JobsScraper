@@ -27,67 +27,70 @@ func setupRouter() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
+	scraperRoute := r.Group("/scraper")
+	customJobRoute := r.Group("/customjob")
+
 	if _, exists := os.LookupEnv("RAILWAY_ENVIRONMENT"); exists == false {
 		err := godotenv.Load()
 		if err != nil {
 			log.Fatalf("Error loading .env file: %v", err)
 		}
 	}
-	r.GET("/cred", func(c *gin.Context) {
+	scraperRoute.GET("/cred", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.CredScraper)
 	})
-	r.GET(("/atlassian"), func(c *gin.Context) {
+	scraperRoute.GET(("/atlassian"), func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.AtlassianScrapper)
 	})
-	r.GET("/amazon", func(c *gin.Context) {
+	scraperRoute.GET("/amazon", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.AmazonScrapper)
 	})
-	r.GET("/coursera", func(c *gin.Context) {
+	scraperRoute.GET("/coursera", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.CourseraScraper)
 	})
-	r.GET("/freshworks", func(c *gin.Context) {
+	scraperRoute.GET("/freshworks", func(c *gin.Context) {
 
 		handlers.HandleScrapingRequest(c, services.FreshWorksScraper)
 	})
-	r.GET("/gojek", func(c *gin.Context) {
+	scraperRoute.GET("/gojek", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.GojekScraper)
 	})
-	r.GET("/mpl", func(c *gin.Context) {
+	scraperRoute.GET("/mpl", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.MplScrapper)
 	})
-	r.GET("/google", func(c *gin.Context) {
+	scraperRoute.GET("/google", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.GoogleScraper)
 	})
-	r.GET("/fi", func(c *gin.Context) {
+	scraperRoute.GET("/fi", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.EpfiScraper)
 	})
-	r.GET("/frontrow", func(c *gin.Context) {
+	scraperRoute.GET("/frontrow", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.FrontRowScrapper)
 	})
-	r.GET("/sardine", func(c *gin.Context) {
+	scraperRoute.GET("/sardine", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.SardineScraper)
 	})
-	r.GET("/zoho", func(c *gin.Context) {
+	scraperRoute.GET("/zoho", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.ZohoScraper)
 
 	})
-	r.GET("/jar", func(c *gin.Context) {
+	scraperRoute.GET("/jar", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.JarScraper)
 	})
-	r.GET("/paytm", func(c *gin.Context) {
+	scraperRoute.GET("/paytm", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.PaytmScraper)
 	})
-	r.GET("/fincent", func(c *gin.Context) {
+	scraperRoute.GET("/fincent", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.FincentScraper)
 	})
-	r.GET("/paypal", func(c *gin.Context) {
+	scraperRoute.GET("/paypal", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.PayPalScraper)
 	})
-	r.GET("/niyo", func(c *gin.Context) {
+	scraperRoute.GET("/niyo", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.NiyoSolutionScraper)
 	})
 
-	r.POST("/insertCustomJob", func(c *gin.Context) {
+	customJobRoute.POST("/insertCustomJob", func(c *gin.Context) {
 		var input models.UserDefinedJob
 
 		if err := c.ShouldBindJSON(&input); err != nil {
@@ -112,7 +115,7 @@ func setupRouter() *gin.Engine {
 		handlers.InsertJob(c, job)
 
 	})
-	r.POST("/updateCustomJob", func(c *gin.Context) {
+	customJobRoute.POST("/updateCustomJob", func(c *gin.Context) {
 		var input models.UserDefinedJob
 
 		if err := c.ShouldBindJSON(&input); err != nil {
@@ -137,19 +140,9 @@ func setupRouter() *gin.Engine {
 		handlers.UpdateJob(c, job)
 
 	})
-	r.POST("/deleteCustomJob", func(c *gin.Context) {
-		var input models.UserDefinedJob
-
-		if err := c.ShouldBindJSON(&input); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		handlers.DeleteJob(c, input.ID)
-
-	})
-	r.GET("/getallCustomJobs", handlers.GetAllJobs)
-	r.GET("/syncwithSql", func(c *gin.Context) {
+	customJobRoute.POST("/deleteCustomJob", handlers.DeleteJob)
+	customJobRoute.GET("/getallCustomJobs", handlers.GetAllJobs)
+	scraperRoute.GET("/syncwithSql", func(c *gin.Context) {
 		password := c.Query("password")
 
 		correctPassword := os.Getenv("SYNC_WITH_SQL_PASSWORD")
@@ -162,9 +155,9 @@ func setupRouter() *gin.Engine {
 		handlers.AllScrapersHandler(c)
 	})
 
-	r.GET("/getallJobsFromSQL", handlers.GetAllJobsFromSqlite)
+	scraperRoute.GET("/getallJobsFromSQL", handlers.GetAllJobsFromSqlite)
 
-	r.GET("/", func(c *gin.Context) {
+	scraperRoute.GET("/", func(c *gin.Context) {
 		c.File("static/base.html")
 	})
 

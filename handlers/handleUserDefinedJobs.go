@@ -95,14 +95,30 @@ func UpdateJob(c *gin.Context, job models.UserDefinedJob) {
 	c.JSON(http.StatusOK, gin.H{"message": "Job updated successfully!"})
 }
 
-func DeleteJob(c *gin.Context, jobID string) {
-	_, err := newdb.Exec(deleteJob, jobID)
+func DeleteJob(c *gin.Context) {
+	id := c.Query("id")
+
+	var exists bool
+	err := newdb.QueryRow("SELECT EXISTS(SELECT 1 FROM customJobs WHERE id = ?)", id).Scan(&exists)
+	if err != nil {
+		log.Printf("Error checking if ID exists: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+
+	if !exists {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Job not found"})
+		return
+	}
+
+	_, err = newdb.Exec(deleteJob, id)
 	if err != nil {
 		log.Printf("Error deleting job: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Job deleted successfully!"})
+
+	c.JSON(http.StatusOK, gin.H{"message": "Job Id " + id + " deleted successfully!"})
 }
 
 func GetAllJobs(c *gin.Context) {
@@ -139,3 +155,16 @@ func GetAllJobs(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"jobs": jobs})
 }
+
+// func deleteCustomJob(c *gin.Context) {
+
+// 	var input models.UserDefinedJob
+
+// 	if err := c.ShouldBindJSON(&input); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
+
+// 	handlers.DeleteJob(c, input.ID)
+
+// }
