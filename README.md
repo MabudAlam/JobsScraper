@@ -206,7 +206,7 @@ Congrats! You just completed the standard _fork -> clone -> edit -> pull request
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/debayangg"><img src="https://avatars.githubusercontent.com/u/66942246?v=4?s=100" width="100px;" alt="Debayan Ghosh"/><br /><sub><b>Debayan Ghosh</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=debayangg" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://linkfree.eddiehub.io/GitWiz01"><img src="https://avatars.githubusercontent.com/u/123467623?v=4?s=100" width="100px;" alt="Abhishek Parmar"/><br /><sub><b>Abhishek Parmar</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=GitWiz01" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://linkfree.eddiehub.io/GitWiz01"><img src="https://avatars.githubusercontent.com/u/123467623?v=4?s=100" width="100px;" alt="Abhishek Parmar"/><br /><sub><b>Abhishek Parmar</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=GitWiz01" title="Documentation">📖</a> <a href="#design-GitWiz01" title="Design">🎨</a></td>
     </tr>
   </tbody>
 </table>
