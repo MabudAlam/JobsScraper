@@ -37,6 +37,8 @@ body:
     id: contact
     attributes:
       label: How can we contact you (optional)
+      placeholder: |
+        Leave your discord or social media handle
     validations:
       required: false
   - type: dropdown
