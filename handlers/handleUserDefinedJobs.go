@@ -83,15 +83,52 @@ func InsertJob(c *gin.Context, job models.UserDefinedJob) {
 	c.JSON(http.StatusOK, gin.H{"message": "Job added successfully!"})
 }
 
-func UpdateJob(c *gin.Context, job models.UserDefinedJob) {
+func UpdateJob(c *gin.Context) {
+	var input models.UserDefinedJob
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	id := input.ID
+
+	var exists bool
+	err := newdb.QueryRow("SELECT EXISTS(SELECT 1 FROM customJobs WHERE id = ?)", id).Scan(&exists)
+	if err != nil {
+		log.Printf("Error checking if ID exists: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+
+	if !exists {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Job not found"})
+		return
+	}
+
+	job := models.UserDefinedJob{
+		ID:          id,
+		Title:       input.Title,
+		Location:    input.Location,
+		ApplyURL:    input.ApplyURL,
+		ImageUrl:    input.ImageUrl,
+		CreatedAt:   input.CreatedAt,
+		Company:     input.Company,
+		Expired:     input.Expired,
+		Salary:      input.Salary,
+		Skills:      input.Skills,
+		Description: input.Description,
+	}
+
 	skillsString := strings.Join(job.Skills, ",")
 
-	_, err := newdb.Exec(updateJob, job.Title, job.Location, job.CreatedAt, job.Company, job.ApplyURL, job.ImageUrl, job.Description, skillsString, job.Expired, job.Salary, job.ID)
+	_, err = newdb.Exec(updateJob, job.Title, job.Location, job.CreatedAt, job.Company, job.ApplyURL, job.ImageUrl, job.Description, skillsString, job.Expired, job.Salary, job.ID)
 	if err != nil {
 		log.Printf("Error updating job: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "Job updated successfully!"})
 }
 
@@ -155,16 +192,3 @@ func GetAllJobs(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"jobs": jobs})
 }
-
-// func deleteCustomJob(c *gin.Context) {
-
-// 	var input models.UserDefinedJob
-
-// 	if err := c.ShouldBindJSON(&input); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-
-// 	handlers.DeleteJob(c, input.ID)
-
-// }

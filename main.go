@@ -115,34 +115,10 @@ func setupRouter() *gin.Engine {
 		handlers.InsertJob(c, job)
 
 	})
-	customJobRoute.POST("/updateCustomJob", func(c *gin.Context) {
-		var input models.UserDefinedJob
-
-		if err := c.ShouldBindJSON(&input); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		job := models.UserDefinedJob{
-			Title:       input.Title,
-			ID:          input.ID,
-			Location:    input.Location,
-			ApplyURL:    input.ApplyURL,
-			ImageUrl:    input.ImageUrl,
-			CreatedAt:   input.CreatedAt,
-			Company:     input.Company,
-			Expired:     input.Expired,
-			Salary:      input.Salary,
-			Skills:      input.Skills,
-			Description: input.Description,
-		}
-
-		handlers.UpdateJob(c, job)
-
-	})
+	customJobRoute.POST("/updateCustomJob", handlers.UpdateJob)
 	customJobRoute.POST("/deleteCustomJob", handlers.DeleteJob)
 	customJobRoute.GET("/getallCustomJobs", handlers.GetAllJobs)
-	scraperRoute.GET("/syncwithSql", func(c *gin.Context) {
+	r.GET("/syncwithSql", func(c *gin.Context) {
 		password := c.Query("password")
 
 		correctPassword := os.Getenv("SYNC_WITH_SQL_PASSWORD")
@@ -155,9 +131,9 @@ func setupRouter() *gin.Engine {
 		handlers.AllScrapersHandler(c)
 	})
 
-	scraperRoute.GET("/getallJobsFromSQL", handlers.GetAllJobsFromSqlite)
+	r.GET("/getallJobsFromSQL", handlers.GetAllJobsFromSqlite)
 
-	scraperRoute.GET("/", func(c *gin.Context) {
+	r.GET("/", func(c *gin.Context) {
 		c.File("static/base.html")
 	})
 
