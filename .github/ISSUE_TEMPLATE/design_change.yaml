@@ -1,0 +1,57 @@
+name: UI/UX Design Improvement 🎨🖌️
+description: Use this template to request a new feature or improvement to the UI/UX of the project.
+labels: ["enhancement", "Figma", "UI", "Hard", "IWOC2024"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **UI/UX Design Improvement Request**
+
+        Please fill out the sections below to help everyone identify the new design or feature you are requesting.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What is the problem you are trying to solve?
+      placeholder: Provide a clear and concise description of the idea or feature you are suggesting.
+    validations:
+      required: true
+
+  - type: textarea
+    id: contact
+    attributes:
+      label: How can we contact you (optional)
+      placeholder: Leave your Discord or social media handle for follow-up or collaboration.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: assign
+    attributes:
+      label: "Would you like to work on this issue?"
+      options:
+        - "Yes, I'd like to contribute."
+        - "No, I'm suggesting this for others to implement."
+  
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: Additional Information
+      placeholder: Provide any extra details or context that might be helpful.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: "By submitting this issue, I confirm that:"
+      options:
+        - label: "I have starred the repo ⭐"
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        **Thank you for reporting this issue!**
+        
+        Your contribution is valuable, and we will review your suggestion promptly. We appreciate your dedication to improving the project.

@@ -1,18 +1,22 @@
 name: Bug Report 🐛
 description: Report a bug
-labels: ["bug","IWOC2024"]
+labels: ["bug", "IWOC2024"]
 body:
   - type: markdown
     attributes:
       value: |
-        Please fill out the sections below to help everyone identify and fix the bug
+        **Bug Report 🐛**
+
+        Please fill out the sections below to help everyone identify and fix the bug.
+
   - type: textarea
     id: description
     attributes:
       label: Describe your issue
-      placeholder: A clear and concise description of what the bug is.
+      placeholder: Provide a clear and concise description of the bug.
     validations:
       required: true
+
   - type: textarea
     id: steps
     attributes:
@@ -24,23 +28,26 @@ body:
         4. See error
     validations:
       required: true
+
   - type: textarea
     id: expected
     attributes:
       label: What was the expected result?
-      placeholder: A clear and concise description of what you expected to happen.
+      placeholder: Provide a clear and concise description of what you expected to happen.
+
   - type: textarea
     id: screenshots
     attributes:
       label: Put here any screenshots or videos (optional)
+
   - type: textarea
     id: contact
     attributes:
       label: How can we contact you (optional)
-      placeholder: |
-        Leave your discord or social media handle
+      placeholder: Leave your Discord or social media handle for clarifications or updates.
     validations:
       required: false
+
   - type: dropdown
     id: assign
     attributes:
@@ -48,6 +55,7 @@ body:
       options:
         - "Yes"
         - "No"
+
   - type: checkboxes
     id: terms
     attributes:
@@ -55,8 +63,10 @@ body:
       options:
         - label: I have starred the repo ⭐
           required: true
-        
+
   - type: markdown
     attributes:
       value: |
-        Thanks for reporting this issue! We will get back to you as soon as possible.
+        **Thank you for reporting this issue!**
+
+        Your contribution is crucial, and we will investigate the bug as soon as possible. We appreciate your effort in improving the project.
