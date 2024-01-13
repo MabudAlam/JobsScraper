@@ -1,0 +1,54 @@
+name: Add a new job source
+description: Add a new job source to the list of job sources
+labels: ["enhancement","IWOC2024"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the sections below to help everyone identify the issue
+  - type: textarea
+    id: description
+    attributes:
+      label: Enter the Company Name
+      placeholder: A clear and concise  company name.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Enter the Company URL
+      placeholder: |
+        1. https://jobs.lever.co/example
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Company LinkedIn URL
+      placeholder: Company LinkedIn URL
+
+  - type: textarea
+    id: contact
+    attributes:
+      label: How can we contact you (optional)
+    validations:
+      required: false
+  - type: dropdown
+    id: assign
+    attributes:
+      label: "Would you like to work on this issue?"
+      options:
+        - "Yes"
+        - "No"
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: "By submitting this issue, I have confirmed that:"
+      options:
+        - label: I have starred the repo ⭐
+          required: true
+        
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this issue! We will get back to you as soon as possible.
