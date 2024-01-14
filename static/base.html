@@ -7,6 +7,7 @@
     <title>Job Postings</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
@@ -288,6 +289,43 @@
             color: #333;
         }
 
+        #scrollTop {
+        display: inline-block;
+        background-color: #73AD21;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        border-radius: 4px;
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        transition: background-color .3s, 
+            opacity .5s, visibility .5s;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1000;
+        }
+        #scrollTop::after {
+        content: "\f077";
+        font-family: FontAwesome;
+        font-weight: normal;
+        font-style: normal;
+        font-size: 2em;
+        line-height: 50px;
+        color: #fff;
+        }
+        #scrollTop:hover {
+        cursor: pointer;
+        background-color: #333;
+        }
+        #scrollTop:active {
+        background-color: #555;
+        }
+        #scrollTop.show {
+        opacity: 1;
+        visibility: visible;
+        }
+
         @media screen and (max-width: 1200px) {
             .career-card {
                 width: calc(50% - 20px);
@@ -318,6 +356,7 @@
     </nav>
 
     <div id="jobCards"></div>
+    <a id="scrollTop"></a>
  
 
     <script>
@@ -440,6 +479,22 @@
             displayJobs(filteredJobs);
         }
         
+        var btn = $('#scrollTop');
+
+        $(window).scroll(function() {
+        if ($(window).scrollTop() > 300) {
+            btn.addClass('show');
+        } else {
+            btn.removeClass('show');
+        }
+        });
+
+        btn.on('click', function(e) {
+        e.preventDefault();
+        $('html, body').animate({scrollTop:0}, '300');
+        });
+
+
         
       
     </script>
