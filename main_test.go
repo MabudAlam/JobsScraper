@@ -54,6 +54,19 @@ func TestCourseraScraper(t *testing.T) {
 	}
 }
 
+func TestHiverScraper(t *testing.T) {
+	router := setupRouter()
+
+	req, _ := http.NewRequest("GET", "/hiver", nil)
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	if check := assert.Equal(t, http.StatusOK, resp.Code); check == false {
+		var hiverError testerror
+		json.NewDecoder(resp.Body).Decode(&hiverError)
+		t.Errorf("/hiver failed. Error message: %s", hiverError.Error)
+	}
+}
 func TestFreshWorksScraper(t *testing.T) {
 	router := setupRouter()
 
