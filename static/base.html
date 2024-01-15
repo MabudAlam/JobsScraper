@@ -91,6 +91,7 @@
             color: #fff;
             padding: 10px 20px;
             margin-left: 10px;
+            margin-right: 10px;
             border-radius: 3px;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -353,6 +354,49 @@
 
         <button id="searchButton" class="search-button">Search</button>
 
+        <button id="filterButton">Apply Filters</button>
+
+        <!-- Add the event listeners for filter dropdowns -->
+        <div class="filter-options">
+            <label for="locationFilter">Location:</label>
+            <select id="locationFilter">
+                <option value="">All Locations</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="New Delhi">New Delhi</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Kolkata">Kolkata</option>
+                <option value="Pune">Pune</option>
+                <option value="Ahmedabad">Ahmedabad</option>
+                <option value="Jaipur">Jaipur</option>
+                <option value="Chandigarh">Chandigarh</option>
+                <option value="Lucknow">Lucknow</option>
+                <option value="Bhopal">Bhopal</option>
+            </select>
+        
+            <label for="companyFilter">Company:</label>
+            <select id="companyFilter">
+                <option value="">All Companies</option>
+                <option value="amazon">Amazon</option>
+                <option value="cred">Cred</option>
+                <option value="freshwork">Freshworks</option>
+                <option value="google">Google</option>
+                <option value="niyo">Niyo</option>
+                <option value="sardine">Sardine</option>
+                <option value="atlassian">Atlassian</option>
+                <option value="epfi">EPFI</option>
+                <option value="frontrow">Frontrow</option>
+                <option value="jar">JAR</option>
+                <option value="paypal">PayPal</option>
+                <option value="zoho">Zoho</option>
+                <option value="coursera">Coursera</option>
+                <option value="fincent">Fincent</option>
+                <option value="gojek">Gojek</option>
+                <option value="mpl">MPL</option>
+                <option value="paytm">Paytm</option>
+            </select>
+        </div>
     </nav>
 
     <div id="jobCards"></div>
@@ -360,7 +404,39 @@
  
 
     <script>
-        let allJobsData = [];
+        let selectedFilters = {
+                location: '',
+                company: ''
+            };
+
+            // Move the allJobsData variable to the global scope
+            let allJobsData = [];
+
+            // Add filter button click event
+            document.getElementById('filterButton').addEventListener('click', function () {
+                performFilterSearch();
+            });
+
+            // Add filter change events
+            document.getElementById('locationFilter').addEventListener('change', function () {
+                selectedFilters.location = this.value;
+                performFilterSearch();
+            });
+
+            document.getElementById('companyFilter').addEventListener('change', function () {
+                selectedFilters.company = this.value;
+                performFilterSearch();
+            });
+
+            function performFilterSearch() {
+                const filteredJobs = allJobsData.filter(job =>
+                    (selectedFilters.location === '' || job.location.toLowerCase().includes(selectedFilters.location.toLowerCase())) &&
+                    (selectedFilters.company === '' || job.company.toLowerCase().includes(selectedFilters.company.toLowerCase()))
+                );
+
+                displayJobs(filteredJobs);
+            }
+
 
         async function fetchAndDisplayJobs() {
             try {
