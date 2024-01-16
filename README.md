@@ -1,6 +1,6 @@
 # Jobs Scraper
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Screenshot](https://github.com/Pavel401/Jobs-Scraper/assets/47685150/bec93412-7c81-443b-990a-9fc0d92bfadc)
@@ -215,6 +215,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/pinak22dhir"><img src="https://avatars.githubusercontent.com/u/122675390?v=4?s=100" width="100px;" alt="Pinak Dhir"/><br /><sub><b>Pinak Dhir</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=pinak22dhir" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Tholkappiar"><img src="https://avatars.githubusercontent.com/u/114584730?v=4?s=100" width="100px;" alt="Tholkappiar M"/><br /><sub><b>Tholkappiar M</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=Tholkappiar" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/hemant933"><img src="https://avatars.githubusercontent.com/u/104961126?v=4?s=100" width="100px;" alt="Hemant Chaudhary"/><br /><sub><b>Hemant Chaudhary</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=hemant933" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/AbhineshJha"><img src="https://avatars.githubusercontent.com/u/142514166?v=4?s=100" width="100px;" alt="Abhinesh"/><br /><sub><b>Abhinesh</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=AbhineshJha" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
