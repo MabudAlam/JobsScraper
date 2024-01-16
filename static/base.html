@@ -574,6 +574,97 @@
         
       
     </script>
-</body>
 
+<style>
+ 
+
+        /* Style for the footer */
+        footer {
+            background-color: green;
+            color: #fff;
+            padding: 30px;
+            width: 100%;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+        }
+        .flex{
+            /* display: flex; */
+            align-content: center;
+        }
+        /* Style for the location and company sections */
+        .locations{
+            text-align: left;
+            float: right;
+            margin-right: 350px;
+
+        }
+        .companies{
+            text-align: left;
+            margin-left: 350px;
+        }
+        ul li{
+            cursor: pointer;
+            
+        }
+        ul li:hover{
+            color: rgb(224, 222, 222);
+        }
+
+        /* Responsive styling using media queries */
+        @media (max-width: 600px) {
+            footer {
+                font-size: 14px;
+            }
+
+            .locations, .companies {
+                text-align: center;
+            }
+        }
+
+</style>
+
+
+<!-- Footer -->
+<footer>
+    <div class="flex">
+        <div class="companies">
+            <div class="locations">
+                <h3>Our Partner Companies</h3><br>
+                <ul>
+                    <li>Amazon</li>
+                    <li>CRED</li>
+                    <li>Freshworks</li>
+                    <li>Google</li>
+                    <li>Niyo</li>
+                    <li>Sardine</li>
+                    <li>Atlassian</li>
+                    <li>EPFI</li>
+                    <li>Frontrow</li>
+                    <li>Jar</li>
+                    <li>PayPal</li>
+                    <li>Zoho</li>
+                </ul>
+            </div>
+            <h3>Our Locations</h3><br>
+            <ul>
+                <li>Bangalore</li>
+                <li>Hyderabad</li>
+                <li>Mumbai</li>
+                <li>New Delhi</li>
+                <li>Chennai</li>
+                <li>Kolkata</li>
+                <li>Pune</li>
+                <li>Ahmedabad</li>
+                <li>Jaipur</li>
+                <li>Chandigarh</li>
+                <li>Lucknow</li>
+                <li>Bhopal</li>
+            </ul>
+        </div>
+    </div>
+
+    <p>&copy; 2024 Your Website Name. All rights reserved.</p>
+</footer>
+</body>
 </html>
