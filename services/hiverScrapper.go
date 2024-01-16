@@ -3,9 +3,7 @@ package services
 import (
 	"fmt"
 	"goscraper/models"
-	"strings"
 	"time"
-
 	"github.com/gocolly/colly/v2"
 )
 
