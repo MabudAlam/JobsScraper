@@ -48,9 +48,6 @@ func setupRouter() *gin.Engine {
 	scraperRoute.GET("/coursera", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.CourseraScraper)
 	})
-	scraperRoute.GET("/jungleegames", func(c *gin.Context) {
-		handlers.HandleScrapingRequest(c, services.JungleeGamesScraper)
-	})
 	scraperRoute.GET("/freshworks", func(c *gin.Context) {
 
 		handlers.HandleScrapingRequest(c, services.FreshWorksScraper)
