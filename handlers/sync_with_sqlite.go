@@ -55,6 +55,10 @@ var scrapers = []struct {
 		scraper: services.FreshWorksScraper,
 	},
 	{
+		name:    "Junglee game",
+		scraper: services.JungleeGamesScraper,
+	},
+	{
 		name:    "Fi Money",
 		scraper: services.EpfiScraper,
 	}, {
