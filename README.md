@@ -1,6 +1,6 @@
 # Jobs Scraper
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Screenshot](https://github.com/Pavel401/Jobs-Scraper/assets/47685150/bec93412-7c81-443b-990a-9fc0d92bfadc)
@@ -216,6 +216,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Tholkappiar"><img src="https://avatars.githubusercontent.com/u/114584730?v=4?s=100" width="100px;" alt="Tholkappiar M"/><br /><sub><b>Tholkappiar M</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=Tholkappiar" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/hemant933"><img src="https://avatars.githubusercontent.com/u/104961126?v=4?s=100" width="100px;" alt="Hemant Chaudhary"/><br /><sub><b>Hemant Chaudhary</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=hemant933" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/AbhineshJha"><img src="https://avatars.githubusercontent.com/u/142514166?v=4?s=100" width="100px;" alt="Abhinesh"/><br /><sub><b>Abhinesh</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=AbhineshJha" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://biodrop.io/harmeetsingh11"><img src="https://avatars.githubusercontent.com/u/130365071?v=4?s=100" width="100px;" alt="Harmeet Singh"/><br /><sub><b>Harmeet Singh</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=harmeetsingh11" title="Code">💻</a> <a href="#plugin-harmeetsingh11" title="Plugin/utility libraries">🔌</a> <a href="#security-harmeetsingh11" title="Security">🛡️</a></td>
     </tr>
   </tbody>
 </table>
