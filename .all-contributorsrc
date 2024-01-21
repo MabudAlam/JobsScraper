@@ -75,6 +75,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "harmeetsingh11",
+      "name": "Harmeet Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130365071?v=4",
+      "profile": "http://biodrop.io/harmeetsingh11",
+      "contributions": [
+        "code",
+        "plugin",
+        "security"
+      ]
     }
   ],
   "contributorsPerLine": 7,
