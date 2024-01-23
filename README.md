@@ -1,6 +1,6 @@
 # Jobs Scraper
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Screenshot](https://github.com/Pavel401/Jobs-Scraper/assets/47685150/bec93412-7c81-443b-990a-9fc0d92bfadc)
@@ -219,6 +219,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://biodrop.io/harmeetsingh11"><img src="https://avatars.githubusercontent.com/u/130365071?v=4?s=100" width="100px;" alt="Harmeet Singh"/><br /><sub><b>Harmeet Singh</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=harmeetsingh11" title="Code">💻</a> <a href="#plugin-harmeetsingh11" title="Plugin/utility libraries">🔌</a> <a href="#security-harmeetsingh11" title="Security">🛡️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/praptisharma28"><img src="https://avatars.githubusercontent.com/u/123169861?v=4?s=100" width="100px;" alt="Prapti Sharma"/><br /><sub><b>Prapti Sharma</b></sub></a><br /><a href="https://github.com/Pavel401/Jobs-Scraper/commits?author=praptisharma28" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
