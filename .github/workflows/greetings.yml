@@ -10,7 +10,7 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: 'Thank you 🙏🏻 for submitting your first issue to Job Scraper. We appreciate your effort and look forward to more contributions.'
-          pr-message: 'Thank you 🙏🏻 for contributing to JobHunt Scraper. Looking forward to more contributions.'
+          pr-message: 'Thank you 🙏🏻 for contributing to Job Scraper. Looking forward to more contributions.'
 
       - name: Label Issues and Pull Requests
         run: |
