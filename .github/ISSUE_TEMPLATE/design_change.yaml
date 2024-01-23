@@ -1,6 +1,6 @@
 name: UI/UX Design Improvement 🎨🖌️
 description: Use this template to request a new feature or improvement to the UI/UX of the project.
-labels: ["feature","enhancement", "Figma", "UI", "Hard", "IWOC2024"]
+labels: ["enhancement", "Figma", "UI", "Hard", "IWOC2024"]
 body:
   - type: markdown
     attributes:
