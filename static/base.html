@@ -151,18 +151,31 @@
         .career-card {
             width: 30rem;
             margin-bottom: 20px;
-
+            background: linear-gradient(to bottom, #ffffff, #f0f0f0);
             margin: 10px;
-            padding: 10px;
+             padding: 15px;
             border: 2px solid #73AD21;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             text-align: left;
             display: inline-block;
             vertical-align: top;
-            border-radius: 5px;
+            border-radius: 8px;
             background-color: #fff;
             transition: transform 0.2s, box-shadow 0.2s;
+            
         }
+        .career-card h5.card-title {
+             font-size: 18px;
+             line-height: 1.4;
+             font-weight: bold;
+        }
+
+        .career-card p.card-text {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #333;
+        }
+
 
         @media screen and (max-width: 1200px) {
             .navbar {
@@ -220,11 +233,13 @@
 
         .career-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            
         }
 
         .apply-button {
             margin-top: 10px;
+            padding: 12px 20px;
         }
 
         .apply-button a {
@@ -236,11 +251,14 @@
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
+            
         }
 
         .apply-button a:hover {
             background-color: #0056b3;
+            transform: scale(1.05);
+            
         }
         .centered-message {
             display: flex;
@@ -256,8 +274,10 @@
         }
 
         .box1 img {
-            object-fit: contain;
+           
             width: 100%;
+            object-fit: cover;
+            height: 100px;
         }
 
 
