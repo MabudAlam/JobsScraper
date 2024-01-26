@@ -32,6 +32,7 @@
             box-sizing: border-box;
             font-family: 'Montserrat', sans-serif;
         }
+
         .navbar {
             background-color: #037729;
             display: flex;
@@ -62,7 +63,7 @@
             padding: 0 10px;
         }
 
-        
+
         .navbar .nav-items li a {
             color: #fff;
             font-size: 15px;
@@ -109,7 +110,7 @@
             top: 0;
             right: 0;
             width: auto;
-            padding: 0 10px; 
+            padding: 0 10px;
             height: 100%;
             background: none;
             border-radius: 3px;
@@ -149,18 +150,6 @@
             color: #0e0d0d !important;
         }
 
-        .career-card h5.card-title {
-             font-size: 18px;
-             line-height: 1.4;
-             font-weight: bold;
-        }
-        
-        .career-card p.card-text {
-            font-size: 14px;
-            line-height: 1.4;
-            color: #333;
-        }
-
 
         @media screen and (max-width: 1200px) {
             .navbar {
@@ -192,85 +181,27 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
-        
+
             .navbar .search-button {
                 margin-top: 10px;
             }
-        
+
             .navbar .searchbar {
                 margin-top: 10px;
             }
-        
+
             .navbar .searchbar input[type="text"] {
                 width: 100%;
             }
-        
+
             .navbar .nav-items li {
                 margin-bottom: 5px;
             }
-        
+
             .navbar .logo,
             .navbar .nav-items {
                 margin-right: 0;
             }
-        }
-        
-
-        .career-card:hover {
-            transform: translateY(-5px);
-             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            
-        }
-
-        .apply-button {
-            margin-top: 10px;
-            padding: 12px 20px;
-        }
-
-        .apply-button a {
-            background-color: #007BFF;
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 3px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: background-color 0.3s, transform 0.2s;
-            
-        }
-
-        .apply-button a:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-            
-        }
-        .centered-message {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 60vh; 
-            font-size: 20px;
-            color: #333;
-        }
-
-        .location-text {
-            margin-right: 10px;
-        }
-
-        .box1 img {
-           
-            width: 100%;
-            object-fit: cover;
-            height: 100px;
-        }
-
-
-        .job-card-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin: 20px;
         }
 
         .career-card {
@@ -287,6 +218,88 @@
             background-color: #fff;
             transition: transform 0.2s, box-shadow 0.2s;
         }
+
+        .career-card .card-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .career-card h5.card-title {
+            font-size: 16px;
+            line-height: 1.2;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .career-card p.card-text {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .career-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .career-card .about {
+            flex-grow: 1;
+        }
+
+        .career-card .company-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .career-card .apply-button {
+            margin-top: 15px;
+        }
+
+        .apply-button a {
+            background-color: #007BFF;
+            border: none;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s, transform 0.2s;
+
+        }
+
+        .apply-button a:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+
+        }
+
+        .centered-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .career-card .location-text {
+            margin-right: 10px;
+        }
+
+
+        #jobCards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
         .centered-message {
             display: flex;
             justify-content: center;
@@ -297,40 +310,44 @@
         }
 
         #scrollTop {
-        display: inline-block;
-        background-color: #73AD21;
-        width: 50px;
-        height: 50px;
-        text-align: center;
-        border-radius: 4px;
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        transition: background-color .3s, 
-            opacity .5s, visibility .5s;
-        opacity: 0;
-        visibility: hidden;
-        z-index: 1000;
+            display: inline-block;
+            background-color: #73AD21;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            border-radius: 4px;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            transition: background-color .3s,
+                opacity .5s, visibility .5s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
         }
+
         #scrollTop::after {
-        content: "\f077";
-        font-family: FontAwesome;
-        font-weight: normal;
-        font-style: normal;
-        font-size: 2em;
-        line-height: 50px;
-        color: #fff;
+            content: "\f077";
+            font-family: FontAwesome;
+            font-weight: normal;
+            font-style: normal;
+            font-size: 2em;
+            line-height: 50px;
+            color: #fff;
         }
+
         #scrollTop:hover {
-        cursor: pointer;
-        background-color: #333;
+            cursor: pointer;
+            background-color: #333;
         }
+
         #scrollTop:active {
-        background-color: #555;
+            background-color: #555;
         }
+
         #scrollTop.show {
-        opacity: 1;
-        visibility: visible;
+            opacity: 1;
+            visibility: visible;
         }
 
         @media screen and (max-width: 1200px) {
@@ -380,7 +397,7 @@
                 <option value="Lucknow">Lucknow</option>
                 <option value="Bhopal">Bhopal</option>
             </select>
-        
+
             <label for="companyFilter">Company:</label>
             <select id="companyFilter">
                 <option value="">All Companies</option>
@@ -410,65 +427,65 @@
 
     <script>
         let selectedFilters = {
-                location: '',
-                company: ''
-            };
+            location: '',
+            company: ''
+        };
 
-            // Move the allJobsData variable to the global scope
-            let allJobsData = [];
+        // Move the allJobsData variable to the global scope
+        let allJobsData = [];
 
-            // Add filter button click event
-            document.getElementById('filterButton').addEventListener('click', function () {
-                performFilterSearch();
-            });
+        // Add filter button click event
+        document.getElementById('filterButton').addEventListener('click', function () {
+            performFilterSearch();
+        });
 
-            // Add filter change events
-            document.getElementById('locationFilter').addEventListener('change', function () {
-                selectedFilters.location = this.value;
-                performFilterSearch();
-            });
+        // Add filter change events
+        document.getElementById('locationFilter').addEventListener('change', function () {
+            selectedFilters.location = this.value;
+            performFilterSearch();
+        });
 
-            document.getElementById('companyFilter').addEventListener('change', function () {
-                selectedFilters.company = this.value;
-                performFilterSearch();
-            });
+        document.getElementById('companyFilter').addEventListener('change', function () {
+            selectedFilters.company = this.value;
+            performFilterSearch();
+        });
 
-            function performFilterSearch() {
-                const filteredJobs = allJobsData.filter(job =>
-                    (selectedFilters.location === '' || job.location.toLowerCase().includes(selectedFilters.location.toLowerCase())) &&
-                    (selectedFilters.company === '' || job.company.toLowerCase().includes(selectedFilters.company.toLowerCase()))
-                );
+        function performFilterSearch() {
+            const filteredJobs = allJobsData.filter(job =>
+                (selectedFilters.location === '' || job.location.toLowerCase().includes(selectedFilters.location.toLowerCase())) &&
+                (selectedFilters.company === '' || job.company.toLowerCase().includes(selectedFilters.company.toLowerCase()))
+            );
 
-                displayJobs(filteredJobs);
-            }
+            displayJobs(filteredJobs);
+        }
 
 
         async function fetchAndDisplayJobs() {
             try {
                 const response = await fetch(`${window.location.href}getallJobsFromSQL`);
-        
+
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 } else {
                     console.log(response);
                     allJobsData = await response.json();
-        
+
                     displayJobs(allJobsData);
                 }
-        
+
 
             } catch (error) {
                 console.error('Error fetching or displaying job data:', error);
             }
         }
-        
+
 
         function displayJobs(data) {
             const jobCardsContainer = document.getElementById('jobCards');
             jobCardsContainer.innerHTML = '';
 
             if (data.length === 0) {
-         
+
 
 
                 const centeredMessage = document.createElement('div');
@@ -483,40 +500,31 @@
 
             } else {
 
-            data.forEach(job => {
-                const card = document.createElement('div');
-                card.className = 'career-card';
-                card.innerHTML = `
-<div class="d-flex justify-content-around flex-wrap mb-10">
-    <div class="row g-0">
-        <div class="col-md-3 d-flex align-items-center p-2">
-            <div class="box box1">   <img src="${job.ImageUrl}" alt="${job.title}" class="card-img-top" width="40" height="40" ></div>
-         
+                data.forEach(job => {
+                    const card = document.createElement('div');
+                    card.className = 'career-card';
+                    card.innerHTML = `
+    <div class="card-body d-flex">
+        <div class="company-logo">
+            <img src="${job.ImageUrl}" alt="${job.title}" class="card-img-top" width="40" height="40">
         </div>
-        <div class="col-md-9">
-            <div class="card-body">
-                <h5 class="card-title">${job.title}</h5>
-                <div class="apply-button">
-                <p class="card-text"><strong>Location:</strong> <span class="location-text">${job.location}</span></p>
-                </div>
-                <div class="apply-button">
-                <p class="card-text"><strong>Company:</strong> <span class="location-text">${job.company}</span></p>
-            </div>
-
-                <div class="apply-button">
-                    <a href="${job.applyUrl}" target="_blank" rel="noopener noreferrer" >Apply Now</a>
-                </div>
-            </div>
+        <div class="about">
+            <h5 class="card-title">${job.title}</h5>
+            <p class="card-text"><strong>Location:</strong> <span class="location-text">${job.location}</span></p>
+            <p class="card-text"><strong>Company:</strong> <span class="location-text">${job.company}</span></p>
+        </div>
+        <div class="apply-button">
+            <a href="${job.applyUrl}" target="_blank" rel="noopener noreferrer">Apply Now</a>
         </div>
     </div>
-</div>
+
 `;
 
 
-                jobCardsContainer.appendChild(card);
-            });
+                    jobCardsContainer.appendChild(card);
+                });
 
-        }
+            }
 
 
         }
@@ -545,7 +553,7 @@
                 document.getElementById('searchButton').click();
             }
         });
-        
+
         document.querySelector('.searchbar input[type="text"]').addEventListener('input', function () {
             performSearch();
         });
@@ -556,34 +564,32 @@
                 job.location.toLowerCase().includes(searchQuery) ||
                 job.company.toLowerCase().includes(searchQuery)
             );
-        
+
             displayJobs(filteredJobs);
         }
-        
+
         var btn = $('#scrollTop');
 
-        $(window).scroll(function() {
-        if ($(window).scrollTop() > 300) {
-            btn.addClass('show');
-        } else {
-            btn.removeClass('show');
-        }
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 300) {
+                btn.addClass('show');
+            } else {
+                btn.removeClass('show');
+            }
         });
 
-        btn.on('click', function(e) {
-        e.preventDefault();
-        $('html, body').animate({scrollTop:0}, '300');
+        btn.on('click', function (e) {
+            e.preventDefault();
+            $('html, body').animate({ scrollTop: 0 }, '300');
         });
 
 
-        
-      
+
+
     </script>
 
-<style>
- 
-
- footer {
+    <style>
+        footer {
             background-color: green;
             color: #fff;
             padding: 20px;
@@ -599,13 +605,13 @@
                 font-size: 14px;
             }
         }
+    </style>
 
-</style>
 
-
- <!-- Footer -->
- <footer>
-    <p>Made with ❤️ by developers</p>
-</footer>
+    <!-- Footer -->
+    <footer>
+        <p>Made with ❤️ by developers</p>
+    </footer>
 </body>
+
 </html>
