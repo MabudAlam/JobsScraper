@@ -8,6 +8,9 @@ type HiverPosting struct {
 	Location    string `json:"location"`
 	Description string `json:"description"`
 	ApplyURL    string `json:"applyUrl"`
+	CreatedAt   int64  `json:"createdAt"`
+	Company     string `json:"company"`
+	ImageURL    string `json:"imageUrl"`
 	// Add other fields as needed
 }
 
