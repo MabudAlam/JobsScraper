@@ -2,8 +2,8 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+<img width="1470" alt="Screenshot 2024-01-31 at 3 55 51 PM" src="https://github.com/Pavel401/Jobs-Scraper/assets/47685150/a3b3dcf8-cb2f-4aa7-9b76-a70a1dcc220f">
 
-![Screenshot](https://github.com/Pavel401/Jobs-Scraper/assets/47685150/bec93412-7c81-443b-990a-9fc0d92bfadc)
 
 ## Table of Contents
 
