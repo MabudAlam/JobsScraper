@@ -56,17 +56,18 @@
         .navbar .nav-items {
             list-style: none;
             display: flex;
-            margin-right: auto;
+            margin-right: 20px;
         }
 
         .navbar .nav-items li {
             padding: 0 10px;
+            margin: 0px 10px;
         }
 
 
         .navbar .nav-items li a {
             color: #fff;
-            font-size: 15px;
+            font-size: 30px;
             font-weight: 500;
             text-decoration: none;
         }
@@ -92,7 +93,7 @@
             background-color: #007BFF;
             border: none;
             color: #fff;
-            padding: 10px 20px;
+            padding: 9px 18px;
             margin-left: 10px;
             margin-right: 10px;
             border-radius: 3px;
@@ -110,7 +111,7 @@
             top: 0;
             right: 0;
             width: auto;
-            padding: 0 10px;
+            padding: 0 15px;
             height: 100%;
             background: none;
             border-radius: 3px;
@@ -119,6 +120,7 @@
         }
 
         .navbar .searchbar .icon i {
+            font-size: 22px;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -202,6 +204,23 @@
             .navbar .nav-items {
                 margin-right: 0;
             }
+        }
+        /* Filter Options Styles */
+        .filter-options {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            gap: 10px;
+        }
+
+        .filter-options label {
+            margin-right: 5px;
+            color: #fff;
+        }
+
+        .filter-options select {
+            padding: 6px;
+            border-radius: 3px;
         }
 
         .career-card {
@@ -363,11 +382,6 @@
         <div class="logo">
             Jobs Scraper
         </div>
-
-        <div class="nav-items">
-            <li><a href="https://github.com/Pavel401/Jobs-Scraper">Github</a></li>
-
-        </div>
         <div class="searchbar">
             <input type="text" placeholder="Search">
             <div class="icon">
@@ -377,11 +391,9 @@
 
         <button id="searchButton" class="search-button">Search</button>
 
-        <button id="filterButton">Apply Filters</button>
-
         <!-- Add the event listeners for filter dropdowns -->
         <div class="filter-options">
-            <label for="locationFilter">Location:</label>
+            <!-- <label for="locationFilter">Location:</label> -->
             <select id="locationFilter">
                 <option value="">All Locations</option>
                 <option value="Bangalore">Bangalore</option>
@@ -398,7 +410,7 @@
                 <option value="Bhopal">Bhopal</option>
             </select>
 
-            <label for="companyFilter">Company:</label>
+            <!-- <label for="companyFilter">Company:</label> -->
             <select id="companyFilter">
                 <option value="">All Companies</option>
                 <option value="amazon">Amazon</option>
@@ -420,6 +432,9 @@
                 <option value="paytm">Paytm</option>
             </select>
         </div>
+        <div class="nav-items">
+            <li><a href="https://github.com/Pavel401/Jobs-Scraper" target="_blank"><i class="fa-brands fa-github"></i></a></li>
+        </div>
     </nav>
 
     <div id="jobCards"></div>
@@ -433,11 +448,6 @@
 
         // Move the allJobsData variable to the global scope
         let allJobsData = [];
-
-        // Add filter button click event
-        document.getElementById('filterButton').addEventListener('click', function () {
-            performFilterSearch();
-        });
 
         // Add filter change events
         document.getElementById('locationFilter').addEventListener('change', function () {
