@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goscraper/models"
 	"time"
+
 	"github.com/gocolly/colly/v2"
 )
 
@@ -34,8 +35,7 @@ func HiverScraper() ([]models.Job, error) {
 			Location:  location,
 			CreatedAt: time.Now().Unix(),
 			Company:   "Hiver",
-			ImageURL:  "https://upload.wikimedia.org/wikipedia/commons/1/17/Hiver_logo.png",
-			// Add other fields as needed
+			ImageUrl:  "https://upload.wikimedia.org/wikipedia/commons/1/17/Hiver_logo.png",
 		})
 	})
 

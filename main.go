@@ -61,9 +61,10 @@ func setupRouter() *gin.Engine {
 	scraperRoute.GET("/google", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.GoogleScraper)
 	})
-	 scraperRoute.GET("/hiver", func(c *gin.Context) {
-                handlers.HandleScrapingRequest(c, services.HiverScraper)
-        })
+	///hiver source is not working
+	scraperRoute.GET("/hiver", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.HiverScraper)
+	})
 	scraperRoute.GET("/fi", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.EpfiScraper)
 	})

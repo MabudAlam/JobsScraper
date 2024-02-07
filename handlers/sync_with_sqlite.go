@@ -34,10 +34,10 @@ var scrapers = []struct {
 		name:    "Atlassian",
 		scraper: services.AtlassianScrapper,
 	},
-	{
-		name:    "Hiver",
-		scraper: services.HiverScraper,
-	},
+	// {
+	// 	name:    "Hiver",
+	// 	scraper: services.HiverScraper,
+	// },
 	{
 		name:    "Niyo Solutions",
 		scraper: services.NiyoSolutionScraper,
