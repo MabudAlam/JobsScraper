@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"sync"
 
 	"goscraper/models"
 	"goscraper/services"
@@ -135,13 +136,26 @@ func AllScrapersHandler(c *gin.Context) {
 	}()
 
 	var allPostings []models.Job
+	var wg sync.WaitGroup
+	jobChannel := make(chan []models.Job, len(scrapers))
 
 	for _, scraper := range scrapers {
-		postings, err := scraper.scraper()
-		if err != nil {
-			handleError(c, err)
-			return
-		}
+		wg.Add(1)
+		go func(scraper func() ([]models.Job, error)) {
+			defer wg.Done()
+			postings, err := scraper()
+			if err != nil {
+				log.Println("Error scraping:", err)
+				return
+			}
+			jobChannel <- postings
+		}(scraper.scraper)
+	}
+
+	wg.Wait()
+	close(jobChannel)
+
+	for postings := range jobChannel {
 		allPostings = append(allPostings, postings...)
 	}
 
