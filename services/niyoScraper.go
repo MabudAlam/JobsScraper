@@ -41,7 +41,7 @@ func NiyoSolutionScraper() ([]models.Job, error) {
 			Company:     "Niyo Solutions",
 			ApplyURL:    "https://niyo.darwinbox.in/ms/candidate/careers/" + posting.ID,
 
-			ImageUrl: "https://s3-ap-southeast-1.amazonaws.com/darwinbox-data/INSTANCE5_a63309506e450f_234/logo/a635bf69b93798__tenant-avatar-234_350882374.JPG",
+			ImageUrl: "https://res.cloudinary.com/dc0tfxkph/image/upload/v1750323566/Go%20Scraper/qlu5tpgeza2cnf70fbxs.png",
 		}
 	}
 

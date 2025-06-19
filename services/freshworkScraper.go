@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"goscraper/models"
 	"goscraper/utility"
 	"log"
@@ -38,9 +37,8 @@ func FreshWorksScraper() ([]models.Job, error) {
 			ID:        utility.GenerateRandomID(),
 			Company:   "Freshworks",
 			CreatedAt: currentTime.Unix(),
-			ImageUrl:  "https://c.smartrecruiters.com/sr-careersite-image-prod-aws-dc5/6192298b15620618dbc926de/1f3e7b18-283d-4204-bc54-638c69b3de7f?r=s3-eu-central-1.png",
+			ImageUrl:  "https://res.cloudinary.com/dc0tfxkph/image/upload/v1750323820/Go%20Scraper/ablsfwdo8uyqmb1a46tl.png",
 		}
-		fmt.Print(posting)
 		postings = append(postings, posting)
 	})
 
@@ -48,15 +46,6 @@ func FreshWorksScraper() ([]models.Job, error) {
 	if err != nil {
 		log.Fatalf("Error visiting the URL: %v", err)
 	}
-
-	// // Print the scraped job postings
-	// for i, posting := range postings {
-	// 	fmt.Printf("Job #%d\n", i+1)
-	// 	fmt.Printf("Title: %s\n", posting.Title)
-	// 	fmt.Printf("Location: %s\n", posting.Location)
-	// 	fmt.Printf("URL: %s\n", posting.ApplyURL)
-	// 	fmt.Println()
-	// }
 
 	return postings, nil
 }

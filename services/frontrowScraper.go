@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/json"
-	"fmt"
 	"goscraper/models"
 	"net/http"
 	"strconv"
@@ -25,7 +24,6 @@ func FrontRowScrapper() ([]models.Job, error) {
 
 	// Decode the JSON response into the amazonpostings struct.
 	if err := json.NewDecoder(resp.Body).Decode(&amazonpostings); err != nil {
-		fmt.Print(err)
 		return nil, err
 	}
 	// Create a slice to hold the job postings.

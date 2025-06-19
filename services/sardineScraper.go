@@ -36,7 +36,6 @@ func SardineScraper() ([]models.Job, error) {
 			CreatedAt: currentTime.Unix(),
 			ImageUrl:  "https://res.cloudinary.com/dc0tfxkph/image/upload/v1699560212/Go%20Scraper/yellbefk4skxwlouoznd.png",
 		}
-		// fmt.Print(posting)
 		postings = append(postings, posting)
 	})
 
