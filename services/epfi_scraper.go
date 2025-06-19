@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"goscraper/models"
 	"goscraper/utility"
 	"log"
@@ -39,7 +38,6 @@ func EpfiScraper() ([]models.Job, error) {
 			CreatedAt: currentTime.Unix(),
 			ImageUrl:  "https://lever-client-logos.s3.us-west-2.amazonaws.com/b1a67862-9e17-4f38-896f-347e051e94b3-1612511026673.png",
 		}
-		fmt.Print(posting)
 		postings = append(postings, posting)
 	})
 

@@ -33,13 +33,14 @@ func AmazonScrapper() ([]models.Job, error) {
 	// Iterate over the job postings and convert them to models.Job structs.
 	for i, posting := range amazonpostings.Jobs {
 		postings[i] = models.Job{
-			Title:     posting.Title,
-			ID:        posting.ID,
-			Location:  posting.Location,
-			CreatedAt: currentTime.Unix(),
-			Company:   "Amazon",
-			ApplyURL:  "https://www.amazon.jobs" + posting.JobPath,
-			ImageUrl:  "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/2500px-Amazon_icon.svg.png",
+			Title:       posting.Title,
+			ID:          posting.ID,
+			Location:    posting.Location,
+			CreatedAt:   currentTime.Unix(),
+			Description: posting.Description,
+			Company:     "Amazon",
+			ApplyURL:    "https://www.amazon.jobs" + posting.JobPath,
+			ImageUrl:    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/2500px-Amazon_icon.svg.png",
 		}
 	}
 

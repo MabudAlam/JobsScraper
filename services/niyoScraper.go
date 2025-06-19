@@ -33,12 +33,13 @@ func NiyoSolutionScraper() ([]models.Job, error) {
 	// Iterate over the job postings and convert them to models.Job structs.
 	for i, posting := range niyo.Message.Jobs {
 		postings[i] = models.Job{
-			Title:     posting.Title,
-			ID:        posting.ID,
-			Location:  string(posting.OfficelocationShowArr),
-			CreatedAt: currentTime.Unix(),
-			Company:   "Niyo Solutions",
-			ApplyURL:  "https://niyo.darwinbox.in/ms/candidate/careers/" + posting.ID,
+			Title:       posting.Title,
+			ID:          posting.ID,
+			Location:    string(posting.OfficelocationShowArr),
+			CreatedAt:   currentTime.Unix(),
+			Description: "NO DATA",
+			Company:     "Niyo Solutions",
+			ApplyURL:    "https://niyo.darwinbox.in/ms/candidate/careers/" + posting.ID,
 
 			ImageUrl: "https://s3-ap-southeast-1.amazonaws.com/darwinbox-data/INSTANCE5_a63309506e450f_234/logo/a635bf69b93798__tenant-avatar-234_350882374.JPG",
 		}

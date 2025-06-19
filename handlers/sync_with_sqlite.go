@@ -70,10 +70,10 @@ var scrapers = []struct {
 		name:    "Gojek",
 		scraper: services.GojekScraper,
 	},
-	{
-		name:    "MPL",
-		scraper: services.MplScrapper,
-	},
+	// {
+	// 	name:    "MPL",
+	// 	scraper: services.MplScrapper,
+	// },
 	{
 		name:    "Google",
 		scraper: services.GoogleScraper,
@@ -82,22 +82,27 @@ var scrapers = []struct {
 		name:    "Zoho",
 		scraper: services.ZohoScraper,
 	},
-	{
-		name:    "Jar App",
-		scraper: services.JarScraper,
-	},
+	// {
+	// 	name:    "Jar App",
+	// 	scraper: services.JarScraper,
+	// },
 	{
 		name:    "Paytm",
 		scraper: services.PaytmScraper,
 	},
-	{
-		name:    "Sardine",
-		scraper: services.SardineScraper,
-	},
+	// {
+	// 	name:    "Sardine",
+	// 	scraper: services.SardineScraper,
+	// },
 	// {
 	// 	name:    "PayPal",
 	// 	scraper: services.PayPalScraper,
 	// },
+
+	{
+		name:    "Atlan",
+		scraper: services.AtlanScrapper,
+	},
 }
 
 const clearTable = `DELETE FROM jobs;`

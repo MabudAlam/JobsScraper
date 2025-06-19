@@ -50,13 +50,14 @@ func AtlassianScrapper() ([]models.Job, error) {
 			locationValue = obj.Location[0]
 		}
 		postings[i] = models.Job{
-			Title:     obj.Title,
-			ID:        obj.LeverId,
-			Location:  locationValue,
-			CreatedAt: time.Now().Unix(),
-			Company:   "Atlassian",
-			ApplyURL:  obj.ApplyUrl,
-			ImageUrl:  "https://res.cloudinary.com/dc0tfxkph/image/upload/v1704286280/Go%20Scraper/u4eaxsknspamducttdh3.png",
+			Title:       obj.Title,
+			ID:          obj.LeverId,
+			Location:    locationValue,
+			Description: obj.Overview + "\n" + obj.Responsibilities + "\n" + obj.Qualifications,
+			CreatedAt:   time.Now().Unix(),
+			Company:     "Atlassian",
+			ApplyURL:    obj.ApplyUrl,
+			ImageUrl:    "https://res.cloudinary.com/dc0tfxkph/image/upload/v1704286280/Go%20Scraper/u4eaxsknspamducttdh3.png",
 		}
 	}
 

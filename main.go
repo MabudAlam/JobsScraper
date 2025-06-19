@@ -55,6 +55,8 @@ func setupRouter() *gin.Engine {
 	scraperRoute.GET("/gojek", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.GojekScraper)
 	})
+
+	//MPL Is not working
 	scraperRoute.GET("/mpl", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.MplScrapper)
 	})
@@ -92,6 +94,10 @@ func setupRouter() *gin.Engine {
 	})
 	scraperRoute.GET("/niyo", func(c *gin.Context) {
 		handlers.HandleScrapingRequest(c, services.NiyoSolutionScraper)
+	})
+
+	scraperRoute.GET("/atlan", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.AtlanScrapper)
 	})
 
 	customJobRoute.POST("/insertCustomJob", func(c *gin.Context) {

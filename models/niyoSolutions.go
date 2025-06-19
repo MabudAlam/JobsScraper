@@ -29,7 +29,7 @@ type NiyoSolutionJob struct {
 	ExperienceToNum        int64                 `json:"experience_to_num"`
 	CreatedOn              string                `json:"created_on"`
 	OfficelocationShowArr  OfficelocationShowArr `json:"officelocation_show_arr"`
-	OfficelocationArr      []OfficelocationArr   `json:"officelocation_arr"`
+	OfficelocationArr      string                `json:"officelocation_arr"`
 	JobPostingOn           int64                 `json:"job_posting_on"`
 	Department             string                `json:"department"`
 	DepartmentID           string                `json:"department_id"`
@@ -55,10 +55,6 @@ const (
 )
 
 type NiyoSolutionOfficelocationArr string
-
-const (
-	A635Bf581E6F26 OfficelocationArr = "a635bf581e6f26"
-)
 
 type NiyoSolutionOfficelocationShowArr string
 
