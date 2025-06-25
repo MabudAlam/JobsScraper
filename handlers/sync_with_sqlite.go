@@ -115,6 +115,10 @@ var scrapers = []ScraperInfo{
 		name:    "Atlan",
 		scraper: services.AtlanScrapper,
 	},
+	{
+		name:    "Jar",
+		scraper: services.JarScraper,
+	},
 }
 
 const clearTable = `DELETE FROM jobs;`
