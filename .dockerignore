@@ -1,5 +1,0 @@
-# Ignore the local db and other files not needed in the build context
-db/
-*.sqlite3
-*.db
-

@@ -27,5 +27,6 @@ steps:
 options:
   logging: CLOUD_LOGGING_ONLY
 
+  
 images:
   - "asia-south1-docker.pkg.dev/mealai-f58b5/jobscraper/jobscraper-server:latest"
