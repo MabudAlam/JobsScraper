@@ -30,7 +30,6 @@ RUN apk add --no-cache sqlite
 # Copy the built binary and static files
 COPY --from=builder /app/jobscraper .
 COPY static ./static
-COPY .env ./.env
 
 # Create folder for SQLite database and copy it there
 RUN mkdir -p /var/www/db/
