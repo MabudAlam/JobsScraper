@@ -1,29 +1,29 @@
-# Google Cloud Build configuration for building and deploying to Cloud Run
 steps:
-  # Build the Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'asia-south1-docker.pkg.dev/mealai-f58b5/jobscraper/jobscraper-app', '.']
+  # Step 1: Build Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    args: [
+      "build",
+      "-t", "asia-south1-docker.pkg.dev/mealai-f58b5/jobscraper/jobscraper-server:latest",
+      "."
+    ]
 
-  # Push the Docker image to Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-south1-docker.pkg.dev/mealai-f58b5/jobscraper/jobscraper-app']
+  # Step 2: Push image to Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: [
+      "push",
+      "asia-south1-docker.pkg.dev/mealai-f58b5/jobscraper/jobscraper-server:latest"
+    ]
 
-  # Deploy to Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
-    args:
-      - run
-      - deploy
-      - jobscraper-app
-      - --image=asia-south1-docker.pkg.dev/mealai-f58b5/jobscraper/jobscraper-app
-      - --region=us-central1
-      - --platform=managed
-      - --allow-unauthenticated
-      - --port=8080
-      - --set-env-vars=DATABASE_URL=file:/var/www/db/jobs.db?cache=shared&mode=rwc&_journal_mode=WAL
-      - --vpc-egress=all-traffic
-      - --memory=512Mi
-      - --cpu=1
+  # Step 3: Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "gcloud"
+    args: [
+      "run", "deploy", "jobscraper-server",  # service name
+      "--image", "asia-south1-docker.pkg.dev/mealai-f58b5/jobscraper/jobscraper-server:latest",
+      "--region", "us-central1",
+      "--platform", "managed",
+      "--allow-unauthenticated"
+    ]
 
 images:
-  - asia-south1-docker.pkg.dev/mealai-f58b5/jobscraper/jobscraper-app
+  - "asia-south1-docker.pkg.dev/mealai-f58b5/jobscraper/jobscraper-server:latest"
