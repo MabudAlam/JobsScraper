@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/json"
-	"fmt"
 	"goscraper/models"
 	"goscraper/utility"
 	"net/http"
@@ -25,7 +24,7 @@ func PayPalScraper() ([]models.Job, error) {
 
 	// Decode the JSON response into the  struct.
 	if err := json.NewDecoder(resp.Body).Decode(&paypalPostings); err != nil {
-		fmt.Print(err)
+		// fmt.Print(err)
 		return nil, err
 	}
 	// Create a slice to hold the job postings.

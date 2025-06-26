@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/json"
-	"fmt"
 	"goscraper/models"
 	"net/http"
 	"time"
@@ -24,7 +23,7 @@ func NiyoSolutionScraper() ([]models.Job, error) {
 
 	// Decode the JSON response into the amazonpostings struct.
 	if err := json.NewDecoder(resp.Body).Decode(&niyo); err != nil {
-		fmt.Print(err)
+		// fmt.Print(err)
 		return nil, err
 	}
 	// Create a slice to hold the job postings.

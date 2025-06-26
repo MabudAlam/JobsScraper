@@ -2,27 +2,59 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type testerror struct {
 	Error string `json:"error"`
 }
 
-func TestAmazonScraper(t *testing.T) {
+func TestScraperEndpoints(t *testing.T) {
 	router := setupRouter()
 
-	req, _ := http.NewRequest("GET", "/amazon", nil)
-	resp := httptest.NewRecorder()
-	router.ServeHTTP(resp, req)
+	testCases := []struct {
+		name     string
+		endpoint string
+	}{
+		{"Amazon", "/scraper/amazon"},
+		{"Atlassian", "/scraper/atlassian"},
+		{"Niyo Solutions", "/scraper/niyo"},
+		{"Coursera", "/scraper/coursera"},
+		{"CRED", "/scraper/cred"},
+		{"FreshWorks", "/scraper/freshworks"},
+		{"Fi Money", "/scraper/fi"},
+		{"Fincent", "/scraper/fincent"},
+		{"FrontRow", "/scraper/frontrow"},
+		{"Gojek", "/scraper/gojek"},
+		{"Google", "/scraper/google"},
+		{"Zoho", "/scraper/zoho"},
+		{"Paytm", "/scraper/paytm"},
+		{"Atlan", "/scraper/atlan"},
+		{"Jar", "/scraper/jar"},
+		{"Razorpay", "/scraper/razorpay"},
+		{"Mpl", "/scraper/mpl"},
+		{"Hiver", "/scraper/hiver"},
+		{"Sardine", "/scraper/sardine"},
+		{"Paypal", "/scraper/paypal"},
+		// Add more if you add more scrapers
+	}
 
-	if check := assert.Equal(t, http.StatusOK, resp.Code); check == false {
-		var amazonError testerror
-		json.NewDecoder(resp.Body).Decode(&amazonError)
-		t.Errorf("/amazon failed. Error message: %s", amazonError.Error)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			req, _ := http.NewRequest("GET", tc.endpoint, nil)
+			resp := httptest.NewRecorder()
+			router.ServeHTTP(resp, req)
+
+			if !assert.Equal(t, http.StatusOK, resp.Code) {
+				var errResp testerror
+				_ = json.NewDecoder(resp.Body).Decode(&errResp)
+				t.Errorf("%s endpoint failed. Error message: %s", tc.endpoint, errResp.Error)
+			}
+		})
 	}
 }
 

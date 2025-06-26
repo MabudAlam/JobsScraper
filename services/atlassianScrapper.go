@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/json"
-	"fmt"
 	"goscraper/models"
 	"io"
 	"net/http"
@@ -21,7 +20,7 @@ func AtlassianScrapper() ([]models.Job, error) {
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
-			fmt.Println(err)
+			// fmt.Println(err)
 			return
 		}
 	}(resp.Body)

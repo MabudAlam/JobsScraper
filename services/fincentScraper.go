@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"goscraper/models"
 	"goscraper/utility"
 	"log"
@@ -45,7 +44,7 @@ func FincentScraper() ([]models.Job, error) {
 			ImageUrl:  "https://res.cloudinary.com/dc0tfxkph/image/upload/v1699633987/Go%20Scraper/btaabv0gjex1erlcnkax.jpg",
 		}
 
-		fmt.Print(posting)
+		// fmt.Print(posting)
 		postings = append(postings, posting)
 	})
 

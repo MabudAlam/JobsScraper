@@ -1,11 +1,10 @@
 package services
 
 import (
-	"fmt"
 	"goscraper/models"
 	"time"
 
-	"github.com/gocolly/colly/v2"
+	"github.com/gocolly/colly"
 )
 
 // HiverScraper scrapes job postings from the provided Hiver link.
@@ -24,10 +23,10 @@ func HiverScraper() ([]models.Job, error) {
 		// Extract relevant information
 		title := e.ChildText(".posting-title")
 		location := e.ChildText(".posting-categories span") // Adjust this based on HTML structure
-		description := e.ChildText(".posting-about")
+		_ = e.ChildText(".posting-about")
 
 		// Print or store the information as needed
-		fmt.Printf("Title: %s\nLocation: %s\nDescription: %s\n", title, location, description)
+		// fmt.Printf("Title: %s\nLocation: %s\nDescription: %s\n", title, location, description)
 
 		// Create a new job posting
 		hiverPostings = append(hiverPostings, models.Job{
