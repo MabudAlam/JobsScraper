@@ -119,6 +119,10 @@ var scrapers = []ScraperInfo{
 		name:    "Jar",
 		scraper: services.JarScraper,
 	},
+	{
+		name:    "Razorpay",
+		scraper: services.RazorpayScraper,
+	},
 }
 
 const clearTable = `DELETE FROM jobs;`

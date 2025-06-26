@@ -100,6 +100,10 @@ func setupRouter() *gin.Engine {
 		handlers.HandleScrapingRequest(c, services.AtlanScrapper)
 	})
 
+	scraperRoute.GET("/razorpay", func(c *gin.Context) {
+		handlers.HandleScrapingRequest(c, services.RazorpayScraper)
+	})
+
 	customJobRoute.POST("/insertCustomJob", func(c *gin.Context) {
 		var input models.UserDefinedJob
 

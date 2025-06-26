@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+// Helper functions moved to a separate file for clarity and maintainability.
+
 func JarScraper() ([]models.Job, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", "https://api.pyjamahr.com/api/public/jobs/", nil)
