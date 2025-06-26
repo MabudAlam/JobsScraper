@@ -27,9 +27,3 @@ steps:
 
 images:
   - "asia-south1-docker.pkg.dev/mealai-f58b5/jobscraper/jobscraper-server:latest"
-
-# Add this to solve the service account log bucket issue
-options:
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
-
-logging: CLOUD_LOGGING_ONLY
