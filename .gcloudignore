@@ -1,0 +1,9 @@
+# Ignore files for gcloud deployments
+.dockerignore
+.git
+.gitignore
+node_modules
+*.log
+*.sqlite3
+*.db
+.env
