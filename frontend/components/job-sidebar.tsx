@@ -15,6 +15,7 @@ import {
   LinkIcon,
   CalendarDaysIcon,
   BookmarkIcon,
+  CurrencyDollarIcon,
 } from "@heroicons/react/24/outline";
 
 function formatFullDate(dateString: string): string {
@@ -112,6 +113,12 @@ export function JobSidebar({
               <Badge variant="secondary" className="text-xs gap-1.5 px-3 py-1">
                 <GlobeAltIcon className="size-3.5" />
                 Remote
+              </Badge>
+            )}
+            {job.compensation && (
+              <Badge variant="secondary" className="text-xs gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 border-emerald-200">
+                <CurrencyDollarIcon className="size-3.5" />
+                {job.compensation}
               </Badge>
             )}
             {job.meta.employmentType && (
