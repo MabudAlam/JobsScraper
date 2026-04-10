@@ -53,7 +53,7 @@ func setupRouter() *gin.Engine {
 		_ = store.InitDB()
 
 		offset := 0
-		limit := 20
+		limit := 80
 		search := c.Query("search")
 		company := c.Query("company")
 		location := c.Query("location")
