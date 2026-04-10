@@ -18,6 +18,7 @@ export interface Job {
   date: string;
   applyLink: string;
   companyName: string;
+  compensation?: string;
   meta: JobMeta;
 }
 
