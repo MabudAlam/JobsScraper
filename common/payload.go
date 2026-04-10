@@ -3,6 +3,7 @@ package common
 import "time"
 
 type JobPayload struct {
+	Id          int       `json:"id"`
 	JobName     string    `json:"jobName"`
 	Description string    `json:"description"`
 	Embedding   []float32 `json:"embedding,omitempty"`

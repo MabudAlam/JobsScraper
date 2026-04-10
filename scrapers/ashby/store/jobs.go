@@ -155,32 +155,101 @@ func SaveSnapshot(job *common.JobPayload) error {
 }
 
 func GetAllActiveJobs() ([]common.JobPayload, error) {
-	rows, err := db.Query(`
-		SELECT job_id, company, title, location, team, department,
+	jobs, _, err := GetActiveJobsPaginated(0, 0, "", "", "", "")
+	return jobs, err
+}
+
+func GetActiveJobsPaginated(offset, limit int, search, company, location, sort string) ([]common.JobPayload, int, error) {
+	var total int
+	var countQuery string
+	var args []interface{}
+
+	countQuery = `SELECT COUNT(*) FROM jobs WHERE is_active = 1`
+	queryArgs := []interface{}{}
+
+	if search != "" {
+		searchPattern := "%" + search + "%"
+		countQuery = `SELECT COUNT(*) FROM jobs WHERE is_active = 1 AND (
+			title LIKE ? OR description LIKE ? OR location LIKE ?
+		)`
+		args = append(args, searchPattern, searchPattern, searchPattern)
+	}
+
+	if company != "" {
+		countQuery += ` AND company = ?`
+		args = append(args, company)
+	}
+
+	if location != "" {
+		countQuery += ` AND location = ?`
+		args = append(args, location)
+	}
+
+	row := db.QueryRow(countQuery, args...)
+	if err := row.Scan(&total); err != nil {
+		return nil, 0, err
+	}
+
+	query := `
+		SELECT id, job_id, company, title, location, team, department,
 			employment_type, remote, description,
 			apply_url, job_url, published_at, compensation_summary
-		FROM jobs WHERE is_active = 1
-		ORDER BY company, published_at DESC`)
+		FROM jobs WHERE is_active = 1`
+	queryArgs = []interface{}{}
+
+	if search != "" {
+		searchPattern := "%" + search + "%"
+		query += ` AND (
+			title LIKE ? OR description LIKE ? OR location LIKE ?
+		)`
+		queryArgs = append(queryArgs, searchPattern, searchPattern, searchPattern)
+	}
+
+	if company != "" {
+		query += ` AND company = ?`
+		queryArgs = append(queryArgs, company)
+	}
+
+	if location != "" {
+		query += ` AND location = ?`
+		queryArgs = append(queryArgs, location)
+	}
+
+	if sort == "oldest" {
+		query += ` ORDER BY published_at ASC`
+	} else {
+		query += ` ORDER BY published_at DESC`
+	}
+
+	if limit > 0 {
+		query += ` LIMIT ? OFFSET ?`
+		queryArgs = append(queryArgs, limit, offset)
+	}
+
+	rows, err := db.Query(query, queryArgs...)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer rows.Close()
 
 	var jobs []common.JobPayload
 	for rows.Next() {
 		var j common.JobPayload
-		var jobID, location, team, department, employmentType, description, applyURL, jobURL, publishedAt, compSummary *string
+		var jobID, loc, team, department, employmentType, description, applyURL, jobURL, publishedAt, compSummary *string
+		var id int
 		var remote int
 
-		if err := rows.Scan(&jobID, &j.CompanyName, &j.JobName, &location, &team, &department,
+		if err := rows.Scan(&id, &jobID, &j.CompanyName, &j.JobName, &loc, &team, &department,
 			&employmentType, &remote, &description,
 			&applyURL, &jobURL, &publishedAt, &compSummary); err != nil {
 			continue
 		}
 
+		j.Id = id
+
 		j.ApplyLink = derefString(applyURL)
 		j.Meta.JobURL = derefString(jobURL)
-		j.Meta.Location = derefString(location)
+		j.Meta.Location = derefString(loc)
 		j.Meta.Team = derefString(team)
 		j.Meta.Department = derefString(department)
 		j.Meta.EmploymentType = derefString(employmentType)
@@ -198,7 +267,7 @@ func GetAllActiveJobs() ([]common.JobPayload, error) {
 
 		jobs = append(jobs, j)
 	}
-	return jobs, nil
+	return jobs, total, nil
 }
 
 func derefString(s *string) string {
@@ -249,4 +318,86 @@ func GetAllCompaniesLastScraped() (map[string]*string, error) {
 		}
 	}
 	return result, nil
+}
+
+func GetAllLocations() ([]string, error) {
+	rows, err := db.Query(`
+		SELECT DISTINCT location FROM jobs 
+		WHERE is_active = 1 AND location IS NOT NULL AND location != ''
+		ORDER BY location`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var locations []string
+	for rows.Next() {
+		var loc string
+		if err := rows.Scan(&loc); err != nil {
+			continue
+		}
+		locations = append(locations, loc)
+	}
+	return locations, nil
+}
+
+func GetAllCompanies() ([]string, error) {
+	rows, err := db.Query(`
+		SELECT DISTINCT company FROM jobs 
+		WHERE is_active = 1 AND company IS NOT NULL AND company != ''
+		ORDER BY company`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var companies []string
+	for rows.Next() {
+		var company string
+		if err := rows.Scan(&company); err != nil {
+			continue
+		}
+		companies = append(companies, company)
+	}
+	return companies, nil
+}
+
+func GetJobById(id int) (*common.JobPayload, error) {
+	query := `
+		SELECT id, job_id, company, title, location, team, department,
+			employment_type, remote, description,
+			apply_url, job_url, published_at, compensation_summary
+		FROM jobs WHERE id = ? AND is_active = 1`
+
+	var j common.JobPayload
+	var jobID, location, team, department, employmentType, description, applyURL, jobURL, publishedAt, compSummary *string
+	var remote int
+
+	err := db.QueryRow(query, id).Scan(
+		&j.Id, &jobID, &j.CompanyName, &j.JobName, &location, &team, &department,
+		&employmentType, &remote, &description,
+		&applyURL, &jobURL, &publishedAt, &compSummary)
+	if err != nil {
+		return nil, err
+	}
+
+	j.ApplyLink = derefString(applyURL)
+	j.Meta.JobURL = derefString(jobURL)
+	j.Meta.Location = derefString(location)
+	j.Meta.Team = derefString(team)
+	j.Meta.Department = derefString(department)
+	j.Meta.EmploymentType = derefString(employmentType)
+	j.Meta.Compensation = derefString(compSummary)
+	j.Meta.Remote = remote == 1
+	j.Description = derefString(description)
+	j.Meta.ContentHash = derefString(jobID)
+	j.Meta.Source = "ashby"
+
+	if publishedAt != nil && *publishedAt != "" {
+		if t, err := time.Parse(time.RFC3339, *publishedAt); err == nil {
+			j.Date = t
+		}
+	}
+
+	return &j, nil
 }

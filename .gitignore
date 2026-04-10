@@ -1,1 +1,40 @@
-/ashbyhq-scraper-main
+# Environment files (secrets)
+.env
+.env.local
+.env.*.local
+
+# Go
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Build output
+tmp/
+searxng/
+
+# Logs
+server.log
+logs/
+
+# Database
+jobs.db
+
+# Frontend (Next.js)
+frontend/node_modules/
+frontend/.next/
+frontend/tsconfig.tsbuildinfo
+
+# macOS
+.DS_Store
+
+# Air live-reload config
+.air.toml
+
+# Skills lock
+skills-lock.json
+
+# Agent skills (locally installed)
+.agents/skills/
