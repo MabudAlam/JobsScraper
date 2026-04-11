@@ -161,11 +161,9 @@ func GetAllActiveJobs() ([]common.JobPayload, error) {
 
 func GetActiveJobsPaginated(offset, limit int, search, company, location, sort string) ([]common.JobPayload, int, error) {
 	var total int
-	var countQuery string
 	var args []interface{}
 
-	countQuery = `SELECT COUNT(*) FROM jobs WHERE is_active = 1`
-	queryArgs := []interface{}{}
+	countQuery := `SELECT COUNT(*) FROM jobs WHERE is_active = 1`
 
 	if search != "" {
 		searchPattern := "%" + search + "%"
@@ -195,7 +193,7 @@ func GetActiveJobsPaginated(offset, limit int, search, company, location, sort s
 			employment_type, remote, description,
 			apply_url, job_url, published_at, compensation_summary
 		FROM jobs WHERE is_active = 1`
-	queryArgs = []interface{}{}
+	queryArgs := []interface{}{}
 
 	if search != "" {
 		searchPattern := "%" + search + "%"
@@ -235,21 +233,18 @@ func GetActiveJobsPaginated(offset, limit int, search, company, location, sort s
 	var jobs []common.JobPayload
 	for rows.Next() {
 		var j common.JobPayload
-		var jobID, loc, team, department, employmentType, description, applyURL, jobURL, publishedAt, compSummary *string
-		var id int
+		var jobID, location, team, department, employmentType, description, applyURL, jobURL, publishedAt, compSummary *string
 		var remote int
 
-		if err := rows.Scan(&id, &jobID, &j.CompanyName, &j.JobName, &loc, &team, &department,
+		if err := rows.Scan(&j.Id, &jobID, &j.CompanyName, &j.JobName, &location, &team, &department,
 			&employmentType, &remote, &description,
 			&applyURL, &jobURL, &publishedAt, &compSummary); err != nil {
 			continue
 		}
 
-		j.Id = id
-
 		j.ApplyLink = derefString(applyURL)
 		j.Meta.JobURL = derefString(jobURL)
-		j.Meta.Location = derefString(loc)
+		j.Meta.Location = derefString(location)
 		j.Meta.Team = derefString(team)
 		j.Meta.Department = derefString(department)
 		j.Meta.EmploymentType = derefString(employmentType)

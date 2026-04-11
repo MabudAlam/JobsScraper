@@ -37,6 +37,8 @@ func loadCompaniesFromFile() {
 }
 
 func loadCompaniesFromEnv() {
+	DefaultCompanies = []CompanyInfo{}
+
 	envCompanies := os.Getenv("ASHBY_COMPANIES")
 	if envCompanies != "" {
 		var parsed []CompanyInfo

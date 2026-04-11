@@ -8,6 +8,7 @@ import (
 
 	"ashbyimpl/scrapers/ashby/scheduler"
 	"ashbyimpl/scrapers/ashby/store"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
