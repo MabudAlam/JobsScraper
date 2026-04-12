@@ -1,8 +1,10 @@
 package diff
 
 import (
+	"fmt"
+
 	"ashbyimpl/common"
-	"ashbyimpl/scrapers/ashby/store"
+	"ashbyimpl/embeddings"
 	"ashbyimpl/scrapers/ashby/utils"
 )
 
@@ -12,24 +14,24 @@ func DetectChanges(normalizedJobs []*common.JobPayload, company string) []common
 
 	for _, job := range normalizedJobs {
 		currentActiveJobIds = append(currentActiveJobIds, job.Meta.ContentHash)
-		result, err := store.UpsertJob(job)
+		result, err := embeddings.UpsertJob(job)
 		if err != nil {
-			utils.LoggerInstance.Error("Upsert error for", job.JobName, ":", err)
+			utils.LoggerInstance.Error(fmt.Sprintf("Upsert error for %s: %v", job.JobName, err))
 			continue
 		}
 
-		if result == store.Inserted {
+		if result == embeddings.Inserted {
 			changes = append(changes, common.Change{Type: common.ChangeNew, Job: job})
-			_ = store.SaveSnapshot(job)
+			_ = embeddings.SaveSnapshot(job)
 			utils.LoggerInstance.Debug("NEW:", job.JobName, "at", company)
-		} else if result == store.Updated {
+		} else if result == embeddings.Updated {
 			changes = append(changes, common.Change{Type: common.ChangeUpdated, Job: job})
-			_ = store.SaveSnapshot(job)
+			_ = embeddings.SaveSnapshot(job)
 			utils.LoggerInstance.Debug("UPDATED:", job.JobName, "at", company)
 		}
 	}
 
-	removed, _ := store.MarkRemovedJobs(company, currentActiveJobIds)
+	removed, _ := embeddings.MarkRemovedJobs(company, currentActiveJobIds)
 	for _, r := range removed {
 		job := &common.JobPayload{
 			JobName: r,

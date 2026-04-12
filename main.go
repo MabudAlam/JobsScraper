@@ -6,8 +6,8 @@ import (
 	"os"
 	"strconv"
 
+	"ashbyimpl/embeddings"
 	"ashbyimpl/scrapers/ashby/scheduler"
-	"ashbyimpl/scrapers/ashby/store"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -36,10 +36,12 @@ func setupRouter() *gin.Engine {
 		}
 	}
 
+	embeddings.InitDB()
+
 	r.GET("/syncall", func(c *gin.Context) {
 		password := c.Query("password")
 
-		correctPassword := os.Getenv("SYNC_WITH_SQL_PASSWORD")
+		correctPassword := os.Getenv("SYNC_PASSWORD")
 
 		if password != correctPassword {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
@@ -50,9 +52,61 @@ func setupRouter() *gin.Engine {
 		c.JSON(http.StatusOK, gin.H{"status": "sync completed"})
 	})
 
-	r.GET("/getallJobsFromSQL", func(c *gin.Context) {
-		_ = store.InitDB()
+	r.POST("/reembed", func(c *gin.Context) {
+		password := c.Query("password")
+		correctPassword := os.Getenv("SYNC_PASSWORD")
 
+		if password != correctPassword {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
+			return
+		}
+
+		apiKey := os.Getenv("OPENROUTER_API_KEY")
+		if apiKey == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "OPENROUTER_API_KEY not set"})
+			return
+		}
+
+		embedSvc := embeddings.NewEmbeddingService(apiKey)
+
+		jobs, err := embeddings.GetAllActiveJobs()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		log.Printf("Re-embedding %d jobs", len(jobs))
+
+		texts := make([]string, len(jobs))
+		for i, job := range jobs {
+			texts[i] = embedSvc.GenerateJobText(&job)
+		}
+
+		vectors, err := embedSvc.EmbedTexts(texts)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		success := 0
+		for i, job := range jobs {
+			if i < len(vectors) {
+				job.Embedding = vectors[i]
+				if _, err := embeddings.UpsertJob(&job); err == nil {
+					success++
+				}
+			}
+		}
+
+		log.Printf("Successfully re-embedded %d/%d jobs", success, len(jobs))
+		c.JSON(http.StatusOK, gin.H{
+			"status":  "completed",
+			"total":   len(jobs),
+			"success": success,
+		})
+	})
+
+	r.GET("/getallJobsFromSQL", func(c *gin.Context) {
 		offset := 0
 		limit := 80
 		search := c.Query("search")
@@ -71,7 +125,7 @@ func setupRouter() *gin.Engine {
 			}
 		}
 
-		jobs, total, err := store.GetActiveJobsPaginated(offset, limit, search, company, location, sort)
+		jobs, total, err := embeddings.GetActiveJobsPaginated(offset, limit, search, company, location, sort)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -85,8 +139,7 @@ func setupRouter() *gin.Engine {
 	})
 
 	r.GET("/companies", func(c *gin.Context) {
-		_ = store.InitDB()
-		companies, err := store.GetAllCompanies()
+		companies, err := embeddings.GetAllCompanies()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -95,8 +148,7 @@ func setupRouter() *gin.Engine {
 	})
 
 	r.GET("/locations", func(c *gin.Context) {
-		_ = store.InitDB()
-		locations, err := store.GetAllLocations()
+		locations, err := embeddings.GetAllLocations()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -105,8 +157,6 @@ func setupRouter() *gin.Engine {
 	})
 
 	r.GET("/job/:id", func(c *gin.Context) {
-		_ = store.InitDB()
-
 		idStr := c.Param("id")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
@@ -114,13 +164,64 @@ func setupRouter() *gin.Engine {
 			return
 		}
 
-		job, err := store.GetJobById(id)
+		job, err := embeddings.GetJobById(id)
 		if err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Job not found"})
 			return
 		}
 
 		c.JSON(http.StatusOK, job)
+	})
+
+	r.GET("/search", func(c *gin.Context) {
+		query := c.Query("q")
+		if query == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "query parameter 'q' is required"})
+			return
+		}
+
+		limit := 20
+		if l := c.Query("limit"); l != "" {
+			if parsed, err := strconv.Atoi(l); err == nil && parsed > 0 {
+				limit = parsed
+			}
+		}
+
+		company := c.Query("company")
+		location := c.Query("location")
+
+		vectors, err := embeddings.EmbedJobTexts([]string{query})
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		results, err := embeddings.SearchJobs(vectors[0], limit)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		var filteredResults []map[string]interface{}
+		for _, r := range results {
+			if company != "" {
+				if comp, ok := r["company"].(string); ok && comp != company {
+					continue
+				}
+			}
+			if location != "" {
+				if loc, ok := r["location"].(string); ok && loc != location {
+					continue
+				}
+			}
+			filteredResults = append(filteredResults, r)
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"results": filteredResults,
+			"query":   query,
+			"total":   len(filteredResults),
+		})
 	})
 
 	r.GET("/", func(c *gin.Context) {

@@ -1,6 +1,8 @@
 package scheduler
 
 import (
+	"context"
+	"os"
 	"time"
 
 	"ashbyimpl/common"
@@ -10,19 +12,27 @@ import (
 	"ashbyimpl/scrapers/ashby/intelligence"
 	"ashbyimpl/scrapers/ashby/normalize"
 	"ashbyimpl/scrapers/ashby/notify"
-	"ashbyimpl/scrapers/ashby/store"
 	"ashbyimpl/scrapers/ashby/utils"
 	"ashbyimpl/target"
+
+	"ashbyimpl/embeddings"
 )
 
 func RunPipeline() {
 	startTime := time.Now().UnixNano() / 1000000
 	utils.LoggerInstance.Info("Pipeline run started")
 
-	_ = store.InitDB()
+	if err := embeddings.InitDB(); err != nil {
+		utils.LoggerInstance.Error("Failed to init Qdrant:", err.Error())
+		return
+	}
+	if err := embeddings.CreateTableIfNotExists(); err != nil {
+		utils.LoggerInstance.Error("Failed to create Qdrant tables:", err.Error())
+		return
+	}
 
 	allCompanies := target.GetEnabledCompanies()
-	lastScraped, _ := store.GetAllCompaniesLastScraped()
+	lastScraped, _ := embeddings.GetAllCompaniesLastScraped()
 	companies := target.GetDueCompanies(lastScraped, allCompanies)
 
 	if len(companies) == 0 {
@@ -36,7 +46,7 @@ func RunPipeline() {
 	var allNewJobs []*common.JobPayload
 
 	for i, company := range companies {
-		_ = store.UpsertCompany(company.Company, company.AshbySlug)
+		_ = embeddings.UpsertCompany(company.Company, company.AshbySlug)
 
 		rawData, err := fetch.FetchJobBoard(company.AshbySlug)
 		if err != nil {
@@ -54,7 +64,7 @@ func RunPipeline() {
 			}
 		}
 
-		_ = store.UpdateLastScraped(company.AshbySlug)
+		_ = embeddings.UpdateLastScraped(company.AshbySlug)
 		utils.LoggerInstance.Info("Completed", company.Company+":", len(normalizedJobs), "jobs,", len(changes), "changes")
 
 		if i < len(companies)-1 {
@@ -63,7 +73,31 @@ func RunPipeline() {
 		}
 	}
 
-	activeRows, _ := store.GetAllActiveJobs()
+	if len(allNewJobs) > 0 {
+		apiKey := os.Getenv("OPENROUTER_API_KEY")
+		if apiKey != "" {
+			embedService := embeddings.NewEmbeddingService(apiKey)
+			ctx := context.Background()
+
+			utils.LoggerInstance.Info("Generating embeddings for", len(allNewJobs), "new jobs")
+
+			_, err := embedService.EmbedJobs(ctx, allNewJobs)
+			if err != nil {
+				utils.LoggerInstance.Error("Failed to generate embeddings:", err.Error())
+			} else {
+				for _, job := range allNewJobs {
+					if _, err := embeddings.UpsertJob(job); err != nil {
+						utils.LoggerInstance.Error("Failed to upsert job with embedding:", err.Error())
+					}
+				}
+				utils.LoggerInstance.Info("Successfully stored", len(allNewJobs), "job embeddings")
+			}
+		} else {
+			utils.LoggerInstance.Warn("OPENROUTER_API_KEY not set, skipping embedding generation")
+		}
+	}
+
+	activeRows, _ := embeddings.GetAllActiveJobs()
 	var allActiveJobs []*common.JobPayload
 	for i := range activeRows {
 		allActiveJobs = append(allActiveJobs, &activeRows[i])

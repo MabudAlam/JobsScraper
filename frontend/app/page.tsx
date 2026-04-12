@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { Job, JobsResponse } from "@/lib/types";
+import { Job, JobsResponse, SearchResponse } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 import {
   Empty,
   EmptyDescription,
@@ -33,6 +38,8 @@ import {
   XMarkIcon,
   HeartIcon,
   EyeIcon,
+  DocumentTextIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -119,6 +126,11 @@ function JobCard({
               {job.meta.department}
             </Badge>
           )}
+          {job.score !== undefined && (
+            <Badge variant="secondary" className="text-[10px] px-1.5 py-0.5 gap-1">
+              {(job.score * 100).toFixed(0)}% match
+            </Badge>
+          )}
         </div>
 
         <Separator />
@@ -193,6 +205,8 @@ function SearchBar({
   companies,
   selectedSort,
   onSortChange,
+  searchType,
+  onSearchTypeChange,
 }: {
   search: string;
   onSearchChange: (v: string) => void;
@@ -205,75 +219,96 @@ function SearchBar({
   companies: string[];
   selectedSort: string;
   onSortChange: (v: string) => void;
+  searchType: "keyword" | "vector";
+  onSearchTypeChange: (type: "keyword" | "vector") => void;
 }) {
   return (
-    <div className="flex flex-col sm:flex-row gap-2">
-      <div className="relative flex-1">
-        <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
-        <Input
-          placeholder="Search jobs, companies..."
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && onSearch()}
-          className="pl-9 pr-16 h-10 bg-muted/30 border-0 focus:bg-background rounded-xl"
-        />
-        {search && (
-          <button
-            onClick={() => onSearchChange("")}
-            className="absolute right-10 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded-full transition-colors"
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-col sm:flex-row gap-2">
+        <div className="relative flex-1">
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
+          <Input
+            placeholder={searchType === "vector" ? "Search jobs with AI (e.g., 'React developer in NYC')..." : "Search jobs, companies..."}
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && onSearch()}
+            className="pl-9 pr-16 h-10 bg-muted/30 border-0 focus:bg-background rounded-xl"
+          />
+          {search && (
+            <button
+              onClick={() => onSearchChange("")}
+              className="absolute right-10 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded-full transition-colors"
+            >
+              <XMarkIcon className="size-3 text-muted-foreground" />
+            </button>
+          )}
+          <Button
+            size="sm"
+            onClick={onSearch}
+            className="absolute right-1 top-1/2 -translate-y-1/2 h-7 px-3 rounded-lg"
           >
-            <XMarkIcon className="size-3 text-muted-foreground" />
-          </button>
-        )}
-        <Button
-          size="sm"
-          onClick={onSearch}
-          className="absolute right-1 top-1/2 -translate-y-1/2 h-7 px-3 rounded-lg"
-        >
-          Search
-        </Button>
+            Search
+          </Button>
+        </div>
+
+        <div className="flex gap-2">
+          <Select value={selectedCompany} onValueChange={onCompanyChange}>
+            <SelectTrigger className="w-full sm:w-44 h-10 bg-muted/30 border-0 rounded-xl">
+              <SelectValue placeholder="Company" />
+            </SelectTrigger>
+            <SelectContent position="popper" className="w-48">
+              <SelectItem value="all">All Companies</SelectItem>
+              {companies.map((company) => (
+                <SelectItem key={company} value={company}>
+                  {company}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={selectedLocation} onValueChange={onLocationChange}>
+            <SelectTrigger className="w-full sm:w-40 h-10 bg-muted/30 border-0 rounded-xl">
+              <MapPinIcon className="size-4 mr-2 text-muted-foreground" />
+              <SelectValue placeholder="Location" />
+            </SelectTrigger>
+            <SelectContent position="popper" className="w-48">
+              <SelectItem value="all">All Locations</SelectItem>
+              {locations.map((loc) => (
+                <SelectItem key={loc} value={loc}>
+                  {loc}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={selectedSort} onValueChange={onSortChange}>
+            <SelectTrigger className="w-full sm:w-36 h-10 bg-muted/30 border-0 rounded-xl">
+              <SelectValue placeholder="Sort" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              <SelectItem value="newest">Newest First</SelectItem>
+              <SelectItem value="oldest">Oldest First</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      <div className="flex gap-2">
-        <Select value={selectedCompany} onValueChange={onCompanyChange}>
-          <SelectTrigger className="w-full sm:w-44 h-10 bg-muted/30 border-0 rounded-xl">
-            <SelectValue placeholder="Company" />
-          </SelectTrigger>
-          <SelectContent position="popper" className="w-48">
-            <SelectItem value="all">All Companies</SelectItem>
-            {companies.map((company) => (
-              <SelectItem key={company} value={company}>
-                {company}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={selectedLocation} onValueChange={onLocationChange}>
-          <SelectTrigger className="w-full sm:w-40 h-10 bg-muted/30 border-0 rounded-xl">
-            <MapPinIcon className="size-4 mr-2 text-muted-foreground" />
-            <SelectValue placeholder="Location" />
-          </SelectTrigger>
-          <SelectContent position="popper" className="w-48">
-            <SelectItem value="all">All Locations</SelectItem>
-            {locations.map((loc) => (
-              <SelectItem key={loc} value={loc}>
-                {loc}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={selectedSort} onValueChange={onSortChange}>
-          <SelectTrigger className="w-full sm:w-36 h-10 bg-muted/30 border-0 rounded-xl">
-            <SelectValue placeholder="Sort" />
-          </SelectTrigger>
-          <SelectContent position="popper">
-            <SelectItem value="newest">Newest First</SelectItem>
-            <SelectItem value="oldest">Oldest First</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <Tabs
+        value={searchType}
+        onValueChange={(v) => onSearchTypeChange(v as "keyword" | "vector")}
+        className="w-fit"
+      >
+        <TabsList variant="default" className="h-8">
+          <TabsTrigger value="keyword" className="text-xs gap-1.5">
+            <DocumentTextIcon className="size-3.5" />
+            Keyword
+          </TabsTrigger>
+          <TabsTrigger value="vector" className="text-xs gap-1.5">
+            <SparklesIcon className="size-3.5" />
+            AI Vector
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
     </div>
   );
 }
@@ -284,6 +319,7 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchType, setSearchType] = useState<"keyword" | "vector">("keyword");
   const [selectedLocation, setSelectedLocation] = useState("all");
   const [selectedCompany, setSelectedCompany] = useState("all");
   const [selectedSort, setSelectedSort] = useState("newest");
@@ -328,6 +364,59 @@ export default function Page() {
     [searchQuery, selectedCompany, selectedLocation, selectedSort]
   );
 
+  const fetchVectorSearch = useCallback(
+    async (query: string) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const params = new URLSearchParams();
+        params.set("q", query);
+        params.set("limit", String(PAGE_SIZE));
+        if (selectedCompany !== "all") params.set("company", selectedCompany);
+        if (selectedLocation !== "all") params.set("location", selectedLocation);
+
+        const res = await fetch(`${API_URL}/search?${params.toString()}`);
+        if (!res.ok) throw new Error("Failed to fetch vector search results");
+        const data: SearchResponse = await res.json();
+
+        const mappedJobs: Job[] = data.results.map((r, idx) => {
+          const hashKey = r.content_hash ? r.content_hash.split("").reduce((a, c) => ((a << 5) - a + c.charCodeAt(0)) | 0, 0) : idx;
+          return {
+            id: Math.abs(hashKey) || idx,
+            jobName: r.title,
+            description: r.description,
+            date: r.published_at,
+            applyLink: r.apply_url,
+            companyName: r.company,
+            compensation: r.compensation,
+            score: r.score,
+            meta: {
+              location: r.location,
+              remote: r.remote,
+              department: r.department,
+              team: r.team,
+              employmentType: r.employment_type,
+              compensation: r.compensation,
+              jobUrl: r.job_url,
+              contentHash: r.content_hash,
+              source: "ashby",
+            },
+          };
+        });
+
+        setJobs(mappedJobs);
+        setTotal(data.total);
+        return data;
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Something went wrong");
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [selectedCompany, selectedLocation]
+  );
+
   useEffect(() => {
     async function fetchFilters() {
       try {
@@ -349,8 +438,12 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    fetchJobs(offset);
-  }, [fetchJobs, offset]);
+    if (searchType === "vector" && searchQuery) {
+      fetchVectorSearch(searchQuery);
+    } else {
+      fetchJobs(offset);
+    }
+  }, [fetchJobs, fetchVectorSearch, offset, searchType, searchQuery]);
 
   const findJobById = useCallback(
     async (jobId: string): Promise<Job | null> => {
@@ -432,6 +525,14 @@ export default function Page() {
     setSearchQuery(search);
   };
 
+  const handleSearchTypeChange = (type: "keyword" | "vector") => {
+    setSearchType(type);
+    setOffset(0);
+    if (searchQuery) {
+      setSearchQuery(search);
+    }
+  };
+
   const handleViewJob = (job: Job) => {
     setSelectedJob(job);
     const url = new URL(window.location.href);
@@ -500,6 +601,8 @@ export default function Page() {
             companies={companies}
             selectedSort={selectedSort}
             onSortChange={handleSortChange}
+            searchType={searchType}
+            onSearchTypeChange={handleSearchTypeChange}
           />
         </div>
       </header>
@@ -553,9 +656,9 @@ export default function Page() {
         ) : (
           <>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredJobs.map((job) => (
+              {filteredJobs.map((job, idx) => (
                 <JobCard
-                  key={job.id}
+                  key={`${job.id}-${idx}`}
                   job={job}
                   className="job-card-enter"
                   onView={handleViewJob}
