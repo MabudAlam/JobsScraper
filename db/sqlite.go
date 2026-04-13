@@ -175,7 +175,7 @@ func InsertJobs(jobs []*common.JobPayload) error {
 			contentHash = fmt.Sprintf("job_%d", i)
 		}
 
-		jobID := fmt.Sprintf("job_%d", i)
+		jobID := contentHash
 
 		publishedAt := ""
 		if !job.Date.IsZero() {
@@ -555,7 +555,7 @@ func GetAllCompanies() ([]string, error) {
 		return nil, fmt.Errorf("database not initialized")
 	}
 
-	rows, err := db.Query("SELECT DISTINCT company FROM jobs WHERE is_active = 1 AND company IS NOT NULL AND company != ''")
+	rows, err := db.Query("SELECT DISTINCT company FROM jobs WHERE is_active = 1 AND company IS NOT NULL AND company != '' ORDER BY company ASC")
 	if err != nil {
 		return nil, err
 	}
