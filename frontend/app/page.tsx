@@ -39,7 +39,6 @@ import {
   HeartIcon,
   EyeIcon,
   DocumentTextIcon,
-  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -205,8 +204,6 @@ function SearchBar({
   companies,
   selectedSort,
   onSortChange,
-  searchType,
-  onSearchTypeChange,
 }: {
   search: string;
   onSearchChange: (v: string) => void;
@@ -219,8 +216,6 @@ function SearchBar({
   companies: string[];
   selectedSort: string;
   onSortChange: (v: string) => void;
-  searchType: "keyword" | "vector";
-  onSearchTypeChange: (type: "keyword" | "vector") => void;
 }) {
   return (
     <div className="flex flex-col gap-3">
@@ -228,7 +223,7 @@ function SearchBar({
         <div className="relative flex-1">
           <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
           <Input
-            placeholder={searchType === "vector" ? "Search jobs with AI (e.g., 'React developer in NYC')..." : "Search jobs, companies..."}
+            placeholder="Search jobs, companies..."
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && onSearch()}
@@ -292,23 +287,6 @@ function SearchBar({
           </Select>
         </div>
       </div>
-
-      <Tabs
-        value={searchType}
-        onValueChange={(v) => onSearchTypeChange(v as "keyword" | "vector")}
-        className="w-fit"
-      >
-        <TabsList variant="default" className="h-8">
-          <TabsTrigger value="keyword" className="text-xs gap-1.5">
-            <DocumentTextIcon className="size-3.5" />
-            Keyword
-          </TabsTrigger>
-          <TabsTrigger value="vector" className="text-xs gap-1.5">
-            <SparklesIcon className="size-3.5" />
-            AI Vector
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
     </div>
   );
 }
@@ -319,7 +297,6 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchType, setSearchType] = useState<"keyword" | "vector">("keyword");
   const [selectedLocation, setSelectedLocation] = useState("all");
   const [selectedCompany, setSelectedCompany] = useState("all");
   const [selectedSort, setSelectedSort] = useState("newest");
@@ -364,59 +341,6 @@ export default function Page() {
     [searchQuery, selectedCompany, selectedLocation, selectedSort]
   );
 
-  const fetchVectorSearch = useCallback(
-    async (query: string) => {
-      setLoading(true);
-      setError(null);
-      try {
-        const params = new URLSearchParams();
-        params.set("q", query);
-        params.set("limit", String(PAGE_SIZE));
-        if (selectedCompany !== "all") params.set("company", selectedCompany);
-        if (selectedLocation !== "all") params.set("location", selectedLocation);
-
-        const res = await fetch(`${API_URL}/search?${params.toString()}`);
-        if (!res.ok) throw new Error("Failed to fetch vector search results");
-        const data: SearchResponse = await res.json();
-
-        const mappedJobs: Job[] = data.results.map((r, idx) => {
-          const hashKey = r.content_hash ? r.content_hash.split("").reduce((a, c) => ((a << 5) - a + c.charCodeAt(0)) | 0, 0) : idx;
-          return {
-            id: Math.abs(hashKey) || idx,
-            jobName: r.title,
-            description: r.description,
-            date: r.published_at,
-            applyLink: r.apply_url,
-            companyName: r.company,
-            compensation: r.compensation,
-            score: r.score,
-            meta: {
-              location: r.location,
-              remote: r.remote,
-              department: r.department,
-              team: r.team,
-              employmentType: r.employment_type,
-              compensation: r.compensation,
-              jobUrl: r.job_url,
-              contentHash: r.content_hash,
-              source: "ashby",
-            },
-          };
-        });
-
-        setJobs(mappedJobs);
-        setTotal(data.total);
-        return data;
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "Something went wrong");
-        return null;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [selectedCompany, selectedLocation]
-  );
-
   useEffect(() => {
     async function fetchFilters() {
       try {
@@ -438,12 +362,8 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    if (searchType === "vector" && searchQuery) {
-      fetchVectorSearch(searchQuery);
-    } else {
-      fetchJobs(offset);
-    }
-  }, [fetchJobs, fetchVectorSearch, offset, searchType, searchQuery]);
+    fetchJobs(offset);
+  }, [fetchJobs, offset]);
 
   const findJobById = useCallback(
     async (jobId: string): Promise<Job | null> => {
@@ -525,14 +445,6 @@ export default function Page() {
     setSearchQuery(search);
   };
 
-  const handleSearchTypeChange = (type: "keyword" | "vector") => {
-    setSearchType(type);
-    setOffset(0);
-    if (searchQuery) {
-      setSearchQuery(search);
-    }
-  };
-
   const handleViewJob = (job: Job) => {
     setSelectedJob(job);
     const url = new URL(window.location.href);
@@ -601,8 +513,6 @@ export default function Page() {
             companies={companies}
             selectedSort={selectedSort}
             onSortChange={handleSortChange}
-            searchType={searchType}
-            onSearchTypeChange={handleSearchTypeChange}
           />
         </div>
       </header>

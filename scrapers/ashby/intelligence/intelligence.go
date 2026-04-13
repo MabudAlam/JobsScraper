@@ -4,9 +4,9 @@ import (
 	"strings"
 	"time"
 
-	"ashbyimpl/common"
-	"ashbyimpl/scrapers/ashby/config"
-	"ashbyimpl/scrapers/ashby/utils"
+	"jobscraper/common"
+	"jobscraper/scrapers/ashby/config"
+	"jobscraper/scrapers/ashby/utils"
 )
 
 func ScoreJob(job *common.JobPayload) (int, []string) {

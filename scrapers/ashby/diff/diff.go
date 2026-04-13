@@ -3,9 +3,9 @@ package diff
 import (
 	"fmt"
 
-	"ashbyimpl/common"
-	"ashbyimpl/embeddings"
-	"ashbyimpl/scrapers/ashby/utils"
+	"jobscraper/common"
+	embeddings "jobscraper/db"
+	"jobscraper/scrapers/ashby/utils"
 )
 
 func DetectChanges(normalizedJobs []*common.JobPayload, company string) []common.Change {

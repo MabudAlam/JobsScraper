@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"ashbyimpl/common"
-	"ashbyimpl/scrapers/ashby/config"
-	"ashbyimpl/scrapers/ashby/intelligence"
+	"jobscraper/common"
+	"jobscraper/scrapers/ashby/config"
+	"jobscraper/scrapers/ashby/intelligence"
 )
 
 func PrintRunSummary(changes []common.Change, scoredJobs []*intelligence.ScoredJob) {

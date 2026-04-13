@@ -194,6 +194,12 @@
     "FrequencyHours": 12
   },
   {
+    "Company": "Composio",
+    "AshbySlug": "composio",
+    "Enabled": true,
+    "FrequencyHours": 12
+  },
+  {
     "Company": "Credit Genie",
     "AshbySlug": "creditgenie",
     "Enabled": true,

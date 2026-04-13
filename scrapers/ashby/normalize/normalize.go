@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"ashbyimpl/common"
-	"ashbyimpl/scrapers/ashby/fetch"
-	"ashbyimpl/scrapers/ashby/utils"
+	"jobscraper/common"
+	"jobscraper/scrapers/ashby/fetch"
+	"jobscraper/scrapers/ashby/utils"
 )
 
 var tagRegex = regexp.MustCompile(`<[^>]*>`)

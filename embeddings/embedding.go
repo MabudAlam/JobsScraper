@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"ashbyimpl/common"
+	"jobscraper/common"
 
-	"github.com/OpenRouterTeam/go-sdk"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
 	"github.com/OpenRouterTeam/go-sdk/models/operations"
 )
 
