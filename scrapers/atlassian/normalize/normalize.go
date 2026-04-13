@@ -16,7 +16,7 @@ func NormalizeAtlassianJobs(apiResponse *fetch.AtlassianResponse) []*common.JobP
 	var jobs []*common.JobPayload
 	for _, j := range *apiResponse {
 		jobID := fmt.Sprintf("atlassian-%d", j.ID)
-		if j.ID == "" {
+		if j.ID == 0 {
 			continue
 		}
 

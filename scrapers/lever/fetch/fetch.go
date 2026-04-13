@@ -5,8 +5,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"regexp"
 	"time"
 )
+
+var slugPattern = regexp.MustCompile(`^[a-zA-Z0-9_-]+$`)
+
+const maxBodyBytes = 10 * 1024 * 1024
 
 type Category struct {
 	Commitment   string   `json:"commitment"`
@@ -33,6 +38,10 @@ type RawJob struct {
 type LeverResponse []RawJob
 
 func FetchLeverJobs(companySlug string) (*LeverResponse, error) {
+	if !slugPattern.MatchString(companySlug) {
+		return nil, fmt.Errorf("invalid company slug: %q", companySlug)
+	}
+
 	url := fmt.Sprintf("https://api.lever.co/v0/postings/%s?mode=json", companySlug)
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -59,9 +68,10 @@ func FetchLeverJobs(companySlug string) (*LeverResponse, error) {
 		return nil, fmt.Errorf("HTTP %d", resp.StatusCode)
 	}
 
-	body, err := io.ReadAll(resp.Body)
+	limitedBody := http.MaxBytesReader(nil, resp.Body, maxBodyBytes)
+	body, err := io.ReadAll(limitedBody)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("response body too large or read error: %v", err)
 	}
 
 	var result LeverResponse

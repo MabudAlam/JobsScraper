@@ -1,9 +1,10 @@
 package utils
 
 import (
+	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
-	"math/rand"
+	"math/big"
 	"os"
 	"strings"
 	"time"
@@ -88,6 +89,12 @@ func ContentHash(fields ...string) string {
 }
 
 func JitteredDelay(minMs, maxMs int) {
-	delay := minMs + rand.Intn(maxMs-minMs)
+	n, err := rand.Int(rand.Reader, big.NewInt(int64(maxMs-minMs)))
+	if err != nil {
+		delay := minMs
+		time.Sleep(time.Duration(delay) * time.Millisecond)
+		return
+	}
+	delay := minMs + int(n.Int64())
 	time.Sleep(time.Duration(delay) * time.Millisecond)
 }

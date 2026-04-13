@@ -1,6 +1,7 @@
 package normalize
 
 import (
+	"strings"
 	"time"
 
 	"jobscraper/common"
@@ -37,11 +38,21 @@ func NormalizeAmazonJobs(apiResponse *fetch.AmazonResponse) []*common.JobPayload
 			description = j.Description
 		}
 
+		jobPath := j.JobPath
+		if !strings.HasPrefix(jobPath, "/") || strings.HasPrefix(jobPath, "//") {
+			jobPath = ""
+		}
+
+		applyLink := ""
+		if jobPath != "" {
+			applyLink = "https://www.amazon.jobs" + jobPath
+		}
+
 		payload := &common.JobPayload{
 			JobName:     title,
 			Description: description,
 			Date:        time.Now(),
-			ApplyLink:   "https://www.amazon.jobs" + j.JobPath,
+			ApplyLink:   applyLink,
 			CompanyName: "Amazon",
 			Meta: common.JobMeta{
 				Location:    location,

@@ -6,9 +6,14 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
 )
+
+var slugPattern = regexp.MustCompile(`^[a-zA-Z0-9_-]+$`)
+
+const maxBodyBytes = 10 * 1024 * 1024
 
 type RawJob struct {
 	ID                        string              `json:"id"`
@@ -53,6 +58,10 @@ type NormalizedResponse struct {
 }
 
 func FetchJobBoard(ashbySlug string) (*NormalizedResponse, error) {
+	if !slugPattern.MatchString(ashbySlug) {
+		return nil, fmt.Errorf("invalid ashby slug: %q", ashbySlug)
+	}
+
 	baseURL := fmt.Sprintf("https://api.ashbyhq.com/posting-api/job-board/%s", ashbySlug)
 
 	req, err := http.NewRequest("GET", baseURL, nil)
@@ -91,9 +100,10 @@ func FetchJobBoard(ashbySlug string) (*NormalizedResponse, error) {
 		reader = resp.Body
 	}
 
-	body, err := io.ReadAll(reader)
+	limitedReader := http.MaxBytesReader(nil, reader, maxBodyBytes)
+	body, err := io.ReadAll(limitedReader)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("response body too large or read error: %v", err)
 	}
 
 	var result NormalizedResponse

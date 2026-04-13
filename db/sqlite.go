@@ -1,4 +1,4 @@
-package embeddings
+package db
 
 import (
 	"database/sql"
@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 
@@ -410,22 +411,31 @@ func GetActiveJobsPaginated(offset, limit int, search, company, location, sort s
 		return nil, 0, fmt.Errorf("database not initialized")
 	}
 
-	whereClause := "is_active = 1"
-	args := []interface{}{}
+	var conditions []string
+	var args []interface{}
+
+	conditions = append(conditions, "is_active = 1")
 
 	if company != "" {
-		whereClause += " AND company = ?"
+		conditions = append(conditions, "company = ?")
 		args = append(args, company)
 	}
 	if location != "" {
-		whereClause += " AND location = ?"
+		conditions = append(conditions, "location = ?")
 		args = append(args, location)
 	}
-	if search != "" {
-		whereClause += " AND (title LIKE ? OR description LIKE ? OR location LIKE ?)"
-		searchPattern := "%" + search + "%"
+	if search != "" && len(strings.TrimSpace(search)) >= 2 {
+		escapedSearch := strings.NewReplacer(
+			`\`, `\\`,
+			`%`, `\%`,
+			`_`, `\_`,
+		).Replace(search)
+		searchPattern := "%" + escapedSearch + "%"
+		conditions = append(conditions, "(title LIKE ? ESCAPE '\\' OR description LIKE ? ESCAPE '\\' OR location LIKE ? ESCAPE '\\')")
 		args = append(args, searchPattern, searchPattern, searchPattern)
 	}
+
+	whereClause := strings.Join(conditions, " AND ")
 
 	var total int
 	countQuery := "SELECT COUNT(*) FROM jobs WHERE " + whereClause
@@ -433,14 +443,18 @@ func GetActiveJobsPaginated(offset, limit int, search, company, location, sort s
 		return nil, 0, err
 	}
 
-	orderBy := "scraped_at DESC"
-	if sort == "date" {
-		orderBy = "published_at DESC"
-	} else if sort == "title" {
-		orderBy = "title ASC"
+	allowedSorts := map[string]string{
+		"newest": "scraped_at DESC",
+		"date":   "published_at DESC",
+		"title":  "title ASC",
+	}
+	orderBy, ok := allowedSorts[sort]
+	if !ok {
+		orderBy = "scraped_at DESC"
 	}
 
-	query := fmt.Sprintf("SELECT id, job_id, content_hash, company, title, location, team, department, employment_type, remote, description, apply_url, job_url, compensation, published_at, embedding FROM jobs WHERE %s ORDER BY %s LIMIT ? OFFSET ?", whereClause, orderBy)
+	baseSelect := `SELECT id, job_id, content_hash, company, title, location, team, department, employment_type, remote, description, apply_url, job_url, compensation, published_at, embedding FROM jobs`
+	query := fmt.Sprintf("%s WHERE %s ORDER BY %s LIMIT ? OFFSET ?", baseSelect, whereClause, orderBy)
 	args = append(args, limit, offset)
 
 	rows, err := db.Query(query, args...)

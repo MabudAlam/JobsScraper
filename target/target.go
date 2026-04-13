@@ -8,13 +8,20 @@ import (
 )
 
 type CompanyInfo struct {
-	Company        string
-	AshbySlug      string
-	Enabled        bool
-	FrequencyHours int
+	Company        string `json:"Company"`
+	AshbySlug      string `json:"AshbySlug,omitempty"`
+	LeverSlug      string `json:"LeverSlug,omitempty"`
+	Enabled        bool   `json:"Enabled"`
+	FrequencyHours int    `json:"FrequencyHours,omitempty"`
+}
+
+type CompaniesConfig struct {
+	Lever []CompanyInfo `json:"lever"`
+	Ashby []CompanyInfo `json:"ashby"`
 }
 
 var DefaultCompanies []CompanyInfo
+var LeverCompanies []CompanyInfo
 
 func init() {
 	loadCompaniesFromFile()
@@ -27,17 +34,19 @@ func loadCompaniesFromFile() {
 		return
 	}
 
-	var companies []CompanyInfo
-	if err := json.Unmarshal(data, &companies); err != nil {
+	var config CompaniesConfig
+	if err := json.Unmarshal(data, &config); err != nil {
 		loadCompaniesFromEnv()
 		return
 	}
 
-	DefaultCompanies = companies
+	DefaultCompanies = config.Ashby
+	LeverCompanies = config.Lever
 }
 
 func loadCompaniesFromEnv() {
 	DefaultCompanies = []CompanyInfo{}
+	LeverCompanies = []CompanyInfo{}
 
 	envCompanies := os.Getenv("ASHBY_COMPANIES")
 	if envCompanies != "" {
@@ -55,7 +64,7 @@ func loadCompaniesFromEnv() {
 			kv := strings.Split(strings.TrimSpace(p), ":")
 			if len(kv) == 2 {
 				DefaultCompanies = append(DefaultCompanies, CompanyInfo{
-					Company: kv[0], AshbySlug: kv[1], Enabled: true, FrequencyHours: 12,
+					Company: kv[0], AshbySlug: kv[1], Enabled: true,
 				})
 			}
 		}
@@ -80,7 +89,7 @@ func GetEnabledCompanies() []CompanyInfo {
 			kv := strings.Split(strings.TrimSpace(p), ":")
 			if len(kv) == 2 {
 				companies = append(companies, CompanyInfo{
-					Company: kv[0], AshbySlug: kv[1], Enabled: true, FrequencyHours: 12,
+					Company: kv[0], AshbySlug: kv[1], Enabled: true,
 				})
 			}
 		}
@@ -97,8 +106,26 @@ func GetEnabledCompanies() []CompanyInfo {
 	return companies
 }
 
+func GetEnabledLeverCompanies() []CompanyInfo {
+	companies := []CompanyInfo{}
+
+	if len(companies) == 0 {
+		for _, c := range LeverCompanies {
+			if c.Enabled {
+				companies = append(companies, c)
+			}
+		}
+	}
+
+	return companies
+}
+
 func GetAllCompanies() []CompanyInfo {
 	return DefaultCompanies
+}
+
+func GetAllLeverCompanies() []CompanyInfo {
+	return LeverCompanies
 }
 
 func GetDueCompanies(lastScraped map[string]*string, allCompanies []CompanyInfo) []CompanyInfo {

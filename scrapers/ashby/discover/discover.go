@@ -13,6 +13,8 @@ import (
 
 var cachedClient *http.Client
 
+const maxBodyBytes = 10 * 1024 * 1024
+
 func getClient() *http.Client {
 	if cachedClient == nil {
 		cachedClient = &http.Client{
@@ -69,9 +71,10 @@ func searxngSearch(query string, baseURL string) ([]Result, error) {
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	limitedBody := http.MaxBytesReader(nil, resp.Body, maxBodyBytes)
+	body, err := io.ReadAll(limitedBody)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("response body too large or read error: %v", err)
 	}
 
 	var result SearXNGResponse
@@ -91,15 +94,25 @@ func searxngSearch(query string, baseURL string) ([]Result, error) {
 }
 
 func googleSearch(query string, apiKey string, cx string) ([]Result, error) {
-	baseURL := fmt.Sprintf("https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s", apiKey, cx, url.QueryEscape(query))
+	baseURL := fmt.Sprintf("https://www.googleapis.com/customsearch/v1?cx=%s&q=%s", cx, url.QueryEscape(query))
 
-	resp, err := getClient().Get(baseURL)
+	req, err := http.NewRequest("GET", baseURL, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("X-Goog-Api-Key", apiKey)
+
+	resp, err := getClient().Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
+	limitedBody := http.MaxBytesReader(nil, resp.Body, maxBodyBytes)
+	body, err := io.ReadAll(limitedBody)
+	if err != nil {
+		return nil, fmt.Errorf("response body too large or read error: %v", err)
+	}
 	if err != nil {
 		return nil, err
 	}

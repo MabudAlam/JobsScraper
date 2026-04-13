@@ -1,14 +1,28 @@
 package config
 
 import (
-	"os"
+	"sync"
 
 	"github.com/joho/godotenv"
 )
 
-var cachedConfig *Config
+var (
+	cachedConfig *Config
+	configMu     sync.RWMutex
+	configOnce   sync.Once
+	configErr    error
+)
 
 func LoadConfig() *Config {
+	configMu.RLock()
+	if cachedConfig != nil {
+		configMu.RUnlock()
+		return cachedConfig
+	}
+	configMu.RUnlock()
+
+	configMu.Lock()
+	defer configMu.Unlock()
 	if cachedConfig != nil {
 		return cachedConfig
 	}
@@ -55,16 +69,6 @@ func LoadConfig() *Config {
 				"design",
 			},
 		},
-	}
-
-	if v := os.Getenv("FETCH_DELAY_MIN"); v != "" {
-		cfg.Fetch.DelayBetweenCompaniesMin = 100
-	}
-	if v := os.Getenv("FETCH_DELAY_MAX"); v != "" {
-		cfg.Fetch.DelayBetweenCompaniesMax = 500
-	}
-	if v := os.Getenv("MIN_SCORE"); v != "" {
-		cfg.Intelligence.MinScore = 10
 	}
 
 	cachedConfig = cfg

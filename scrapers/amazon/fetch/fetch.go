@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+const maxBodyBytes = 10 * 1024 * 1024
+
 type RawJob struct {
 	ID                 string `json:"id"`
 	Title              string `json:"title"`
@@ -49,7 +51,11 @@ func FetchAmazonJobs() (*AmazonResponse, error) {
 		return nil, fmt.Errorf("HTTP %d", resp.StatusCode)
 	}
 
-	body, err := io.ReadAll(resp.Body)
+	limitedBody := http.MaxBytesReader(nil, resp.Body, maxBodyBytes)
+	body, err := io.ReadAll(limitedBody)
+	if err != nil {
+		return nil, fmt.Errorf("response body too large or read error: %v", err)
+	}
 	if err != nil {
 		return nil, err
 	}
