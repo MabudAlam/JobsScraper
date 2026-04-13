@@ -1,0 +1,14 @@
+[
+  {
+    "Company": "CRED",
+    "LeverSlug": "cred",
+    "Enabled": true,
+    "FrequencyHours": 12
+  },
+  {
+    "Company": "ShieldAI",
+    "LeverSlug": "shieldai",
+    "Enabled": true,
+    "FrequencyHours": 12
+  }
+]
