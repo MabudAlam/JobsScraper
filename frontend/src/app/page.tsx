@@ -386,11 +386,11 @@ function PageContent() {
           fetch(`${API_URL}/companies`),
         ]);
         if (locationsRes.ok) {
-          const data = await locationsRes.json();
+          const data: { locations?: string[] } = await locationsRes.json();
           setLocations(data.locations ?? []);
         }
         if (companiesRes.ok) {
-          const data = await companiesRes.json();
+          const data: { companies?: string[] } = await companiesRes.json();
           setCompanies(data.companies ?? []);
         }
       } catch {}
