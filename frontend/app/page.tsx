@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Job, JobsResponse, SearchResponse } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -292,6 +292,43 @@ function SearchBar({
 }
 
 export default function Page() {
+  return (
+    <Suspense fallback={<PageLoading />}>
+      <PageContent />
+    </Suspense>
+  );
+}
+
+function PageLoading() {
+  return (
+    <div className="min-h-svh bg-background flex flex-col">
+      <header className="sticky top-0 z-20 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-xl">
+                <BriefcaseIcon className="size-5 text-primary" />
+              </div>
+              <div>
+                <h1 className="text-xl font-semibold">Jobs</h1>
+                <p className="text-xs text-muted-foreground">Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main className="flex-1 container mx-auto px-4 py-4">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <JobSkeleton key={i} />
+          ))}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function PageContent() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

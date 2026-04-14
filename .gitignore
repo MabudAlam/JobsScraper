@@ -38,3 +38,4 @@ skills-lock.json
 
 # Agent skills (locally installed)
 .agents/skills/
+.vercel
